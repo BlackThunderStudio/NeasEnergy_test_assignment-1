@@ -41,7 +41,7 @@ namespace DatabaseLink
                 response = command.ExecuteReader();
             }
             catch(Exception e){
-                throw new DataLayerException("Operation failed! " + e.Message, e);
+                throw new DataLayerException("Operation failed!\n" + e.Message, e);
             }
             finally
             {

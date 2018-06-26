@@ -43,7 +43,9 @@
     <Compile Include="DataLayerException.cs" />
     <Compile Include="DBConnect.cs" />
     <Compile Include="IDataAccessObject.cs" />
-    <Compile Include="models\DBSalesperson.cs" />
+    <Compile Include="model\District.cs" />
+    <Compile Include="model\Salesperson.cs" />
+    <Compile Include="model\Store.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
