@@ -8,7 +8,7 @@ namespace DBLink_tests
     public class ConnectionTest
     {
         [TestMethod]
-        public void NotNullConnection()
+        public void ConnectionTest_NotNullConnection()
         {
             DBConnect conn = new DBConnect();
             var result = conn.GetSqlConnection();
@@ -17,8 +17,8 @@ namespace DBLink_tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DatabaseLink.DataLayerException))]
-        public void ExecuteStmtNullParam_expectedDataLayerException()
+        [ExpectedException(typeof(DataLayerException))]
+        public void ConnectionTest_ExecuteStmtNullParam_expectedDataLayerException()
         {
             DBConnect conn = new DBConnect();
             string param = null;
@@ -27,8 +27,8 @@ namespace DBLink_tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DatabaseLink.DataLayerException))]
-        public void ExecuteStmtEmpty_expectedDataLayerException()
+        [ExpectedException(typeof(DataLayerException))]
+        public void ConnectionTest_ExecuteStmtEmpty_expectedDataLayerException()
         {
             DBConnect conn = new DBConnect();
             string param = "";
@@ -37,8 +37,7 @@ namespace DBLink_tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DatabaseLink.DataLayerException))]
-        public void ExecuteStmt_success()
+        public void ConnectionTest_ExecuteStmt_success()
         {
             DBConnect conn = new DBConnect();
             string param = "select * from salespersons where Id=1";

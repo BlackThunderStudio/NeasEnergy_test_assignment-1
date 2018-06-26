@@ -43,6 +43,7 @@
     <Compile Include="DataLayerException.cs" />
     <Compile Include="DBConnect.cs" />
     <Compile Include="IDataAccessObject.cs" />
+    <Compile Include="mapper\DBSalesperson.cs" />
     <Compile Include="model\District.cs" />
     <Compile Include="model\Salesperson.cs" />
     <Compile Include="model\Store.cs" />

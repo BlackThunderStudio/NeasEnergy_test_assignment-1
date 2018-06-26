@@ -10,7 +10,7 @@ namespace DatabaseLink
     {
         IEnumerable<T> GetAll();
         T Get(int id);
-        T Persist(T t);
+        void Persist(T t);
         void Update(T t);
         void Delete(T t);
     }
