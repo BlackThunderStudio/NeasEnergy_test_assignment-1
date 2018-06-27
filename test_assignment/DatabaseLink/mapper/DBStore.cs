@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DatabaseLink.mapper
 {
-    class DBStore : IDataAccessObject<Store>
+    public class DBStore : IDataAccessObject<Store>
     {
 
         private DBConnect conn = null;
@@ -132,7 +132,7 @@ namespace DatabaseLink.mapper
             if (t.District == null) throw new DataLayerException("District information missing!", new ArgumentNullException());
             if (t.District.Id < 1) throw new DataLayerException("Invalid district ID!", new ArgumentOutOfRangeException());
 
-            string qry = $"if not exists (select 1 from stores where Name='{t.Name}' and address='{t.Address}')\n begin\n insert into stores (name,address,districtid) values ('{t.Name}','{t.Address}',{t.District.Id})";
+            string qry = $"if not exists (select 1 from stores where Name='{t.Name}' and address='{t.Address}')\n begin\n insert into stores (name,address,districtid) values ('{t.Name}','{t.Address}',{t.District.Id})\n end";
 
             try
             {
