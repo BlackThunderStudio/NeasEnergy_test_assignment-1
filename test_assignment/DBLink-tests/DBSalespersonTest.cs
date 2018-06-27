@@ -47,7 +47,7 @@ namespace DBLink_tests
         public void DBSalespersonTest_Persist()
         {
             DBSalesperson dBSalesperson = new DBSalesperson();
-            Salesperson person = new Salesperson() { Name = "Test", Surname = "Object" };
+            Salesperson person = new Salesperson() { Name = "Test", LastName = "Object" };
 
             dBSalesperson.Persist(person);
 
@@ -57,13 +57,13 @@ namespace DBLink_tests
         public void DBSalespersonTest_Persist_Delete()
         {
             DBSalesperson dBSalesperson = new DBSalesperson();
-            Salesperson person = new Salesperson() { Name = "Test", Surname = "Object" };
+            Salesperson person = new Salesperson() { Name = "Test", LastName = "Object" };
 
             dBSalesperson.Persist(person);
 
             Salesperson salesman = dBSalesperson.GetAll().SingleOrDefault(x =>
             {
-                return (x.Name.Equals("Test") && x.Surname.Equals("Object"));
+                return (x.Name.Equals("Test") && x.LastName.Equals("Object"));
             });
 
             dBSalesperson.Delete(salesman);
@@ -75,7 +75,7 @@ namespace DBLink_tests
         public void DBSalespersonTest_Delete_Fail_ID()
         {
             DBSalesperson dBSalesperson = new DBSalesperson();
-            Salesperson person = new Salesperson() { Name = "Definitely A", Surname = "Not Existing Person", Id=-1 };
+            Salesperson person = new Salesperson() { Name = "Definitely A", LastName = "Not Existing Person", Id=-1 };
 
             dBSalesperson.Delete(person);
 

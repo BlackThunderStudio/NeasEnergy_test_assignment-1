@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DatabaseLink;
+using System.Data.SqlClient;
 
 namespace DBLink_tests
 {
@@ -40,13 +41,18 @@ namespace DBLink_tests
         public void ConnectionTest_ExecuteStmt_success()
         {
             DBConnect conn = new DBConnect();
-            string param = "select * from salespersons where Id=1";
+            string param = "select * from people where Id=1";
             const string EXPECTED = "Mike";
 
-            var response = conn.ExecuteSqlStatement(param);
-            Assert.IsNotNull(response);
-            var name = response.GetString(1);
-            Assert.Equals(EXPECTED, name);
+            var link = conn.GetSqlConnection();
+            SqlCommand cmd = new SqlCommand(param, link);
+            link.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+            string name = reader.GetString(1);
+            link.Close();
+
+            Assert.AreEqual(EXPECTED, name);
         }
     }
 }

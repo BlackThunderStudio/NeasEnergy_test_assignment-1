@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DatabaseLink.mapper
 {
@@ -21,10 +19,14 @@ namespace DatabaseLink.mapper
         {
             if(t.Id < 1) throw new DataLayerException("Illegal ID value. ID value cannot be less or equal zero!", new ArgumentOutOfRangeException());
 
-            string qry = $"if exists ( select 1 from salespersons where Id={t.Id} )\n begin\n delete from salespersons where Id={t.Id}\n end";
+            string qry = $"if exists ( select 1 from people where Id={t.Id} )\n begin\n delete from people where Id={t.Id}\n end";
             try
             {
-                var response = conn.ExecuteSqlStatement(qry);
+                var link = conn.GetSqlConnection();
+                SqlCommand cmd = new SqlCommand(qry, link);
+                var response = cmd.ExecuteReader();
+                link.Open();
+                link.Close();
             }
             catch (Exception e)
             {
@@ -34,22 +36,32 @@ namespace DatabaseLink.mapper
 
         public Salesperson Get(int id)
         {
-            string qry = $"select * from salespersons where Id={id}";
+            string qry = $"select * from people where Id={id}";
 
             if (id < 1) throw new DataLayerException("ID cannot be less than zero!", new ArgumentException());
-            SqlDataReader response = null;
             Salesperson person = new Salesperson();
             try
             {
-                response = conn.ExecuteSqlStatement(qry);
-                try
+                //Database interaction
+                var link = conn.GetSqlConnection();
+                using(SqlCommand cmd = new SqlCommand(qry, link))
                 {
-                    person.Name = response.GetString(1);
-                    person.Surname = response.GetString(2);
-                }
-                catch (InvalidCastException e)
-                {
-                    throw new DataLayerException($"Could not map a salesperson of ID: {id}", e);
+                    link.Open();
+                    using(SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        reader.Read();
+                        try
+                        {
+                            person.Id = reader.GetInt32(0);
+                            person.Name = reader.GetString(1);
+                            person.LastName = reader.GetString(2);
+                        }
+                        catch (InvalidCastException e)
+                        {
+                            throw new DataLayerException($"Could not map a salesperson of ID: {id}", e);
+                        }
+                    }
+                    link.Close();
                 }
             }
             catch(Exception e)
@@ -61,27 +73,34 @@ namespace DatabaseLink.mapper
 
         public IEnumerable<Salesperson> GetAll()
         {
-            string qry = "select * from salespersons";
+            string qry = "select * from people";
             List<Salesperson> salespeople = new List<Salesperson>();
-            SqlDataReader response = null;
             try
             {
-                response = conn.ExecuteSqlStatement(qry);
-                while (response.Read())
+                var link = conn.GetSqlConnection();
+                using(SqlCommand cmd = new SqlCommand(qry, link))
                 {
-                    Salesperson temp = new Salesperson();
-                    try
+                    link.Open();
+                    using(SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        temp.Name = response[1].ToString();
-                        temp.Surname = response[2].ToString();
-                        salespeople.Add(temp);
+                        while (reader.Read())
+                        {
+                            Salesperson temp = new Salesperson();
+                            try
+                            {
+                                temp.Id = reader.GetInt32(0);
+                                temp.Name = reader.GetString(1);
+                                temp.LastName = reader.GetString(2);
+                                salespeople.Add(temp);
+                            }
+                            catch (InvalidCastException e)
+                            {
+                                throw new DataLayerException($"Could not map a salesperson from the response.", e);
+                            }
+                        }
                     }
-                    catch(InvalidCastException e)
-                    {
-                        throw new DataLayerException($"Could not map a salesperson from the response.", e);
-                    }
+                    link.Close();
                 }
-
             }
             catch (Exception e)
             {
@@ -93,12 +112,18 @@ namespace DatabaseLink.mapper
         public void Persist(Salesperson t)
         {
             if (t.Name == null) t.Name = String.Empty;
-            if (t.Surname == null) t.Surname = String.Empty;
+            if (t.LastName == null) t.LastName = String.Empty;
 
-            string qry = $"if not exists (select 1 from salespersons where Name={t.Name} and Surname={t.Surname})\n begin\n insert into salespersons (name,surname) values ('{t.Name}','{t.Surname}')\n end";
+            string qry = $"if not exists (select 1 from people where Name='{t.Name}' and LastName='{t.LastName}')\n begin\n insert into people (name,lastname) values ('{t.Name}','{t.LastName}')\n end";
             try
             {
-                var response = conn.ExecuteSqlStatement(qry);
+                var link = conn.GetSqlConnection();
+                using(SqlCommand cmd = new SqlCommand(qry, link))
+                {
+                    link.Open();
+                    var response = cmd.ExecuteReader();
+                    link.Close();
+                }
             }
             catch(Exception e)
             {
@@ -108,14 +133,20 @@ namespace DatabaseLink.mapper
 
         public void Update(Salesperson t)
         {
-            if (t.Name.Equals(String.Empty) || t.Surname.Equals(String.Empty)) throw new DataLayerException("None of the fields can be empty!");
-            if (t.Name == null || t.Surname == null) throw new DataLayerException("NULL values not allowed", new ArgumentNullException());
+            if (t.Name.Equals(String.Empty) || t.LastName.Equals(String.Empty)) throw new DataLayerException("None of the fields can be empty!");
+            if (t.Name == null || t.LastName == null) throw new DataLayerException("NULL values not allowed", new ArgumentNullException());
             if (t.Id < 1) throw new DataLayerException("Illegal ID value. ID value cannot be less or equal zero!", new ArgumentOutOfRangeException());
 
-            string qry = $"if exists ( select 1 from salespersons where Id={t.Id} )\n begin\n update salespersons set Name='{t.Name}',Surname='{t.Surname}' where Id={t.Id}\n end";
+            string qry = $"if exists ( select 1 from people where Id={t.Id} )\n begin\n update people set Name='{t.Name}',LastName='{t.LastName}' where Id={t.Id}\n end";
             try
             {
-                var response = conn.ExecuteSqlStatement(qry);
+                var link = conn.GetSqlConnection();
+                using(SqlCommand cmd = new SqlCommand(qry, link))
+                {
+                    link.Open();
+                    var response = cmd.ExecuteReader();
+                    link.Close();
+                }
             }
             catch (Exception e)
             {
