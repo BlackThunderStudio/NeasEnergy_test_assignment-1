@@ -80,5 +80,61 @@ namespace DBLink_tests
             dBSalesperson.Delete(person);
 
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(DatabaseLink.DataLayerException))]
+        public void DBSalespersonTest_Update_Fail_Name()
+        {
+            DBSalesperson db = new DBSalesperson();
+            var person = db.Get(4);
+            person.Name = String.Empty;
+
+            db.Update(person);
+
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(DatabaseLink.DataLayerException))]
+        public void DBSalespersonTest_Update_Fail_LastName()
+        {
+            DBSalesperson db = new DBSalesperson();
+            var person = db.Get(3);
+            person.LastName = null;
+
+            db.Update(person);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(DatabaseLink.DataLayerException))]
+        public void DBSalespersonTest_Update_Fail_ID()
+        {
+            DBSalesperson db = new DBSalesperson();
+            var person = db.Get(3);
+            person.Id = -2;
+
+            db.Update(person);
+        }
+
+        [TestMethod]
+        public void DBSalespersonTest_Update()
+        {
+            DBSalesperson db = new DBSalesperson();
+            var person = db.Get(3);
+            string nameOld = person.Name;
+            string nameNew = "Jason";
+
+            person.Name = nameNew;
+
+            db.Update(person);
+            person = null;
+
+            person = db.Get(3);
+
+            Assert.AreEqual(nameNew, person.Name);
+
+            //cleanup
+            person.Name = nameOld;
+            db.Update(person);
+        }
     }
 }

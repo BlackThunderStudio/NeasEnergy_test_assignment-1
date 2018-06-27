@@ -24,8 +24,8 @@ namespace DatabaseLink.mapper
             {
                 var link = conn.GetSqlConnection();
                 SqlCommand cmd = new SqlCommand(qry, link);
-                var response = cmd.ExecuteReader();
                 link.Open();
+                var response = cmd.ExecuteReader();
                 link.Close();
             }
             catch (Exception e)
@@ -133,8 +133,8 @@ namespace DatabaseLink.mapper
 
         public void Update(Salesperson t)
         {
-            if (t.Name.Equals(String.Empty) || t.LastName.Equals(String.Empty)) throw new DataLayerException("None of the fields can be empty!");
             if (t.Name == null || t.LastName == null) throw new DataLayerException("NULL values not allowed", new ArgumentNullException());
+            if (t.Name.Equals(String.Empty) || t.LastName.Equals(String.Empty)) throw new DataLayerException("None of the fields can be empty!");           
             if (t.Id < 1) throw new DataLayerException("Illegal ID value. ID value cannot be less or equal zero!", new ArgumentOutOfRangeException());
 
             string qry = $"if exists ( select 1 from people where Id={t.Id} )\n begin\n update people set Name='{t.Name}',LastName='{t.LastName}' where Id={t.Id}\n end";
