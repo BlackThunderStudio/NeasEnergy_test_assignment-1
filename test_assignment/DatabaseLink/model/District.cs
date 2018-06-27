@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace DatabaseLink.model
 {
+    [Serializable]
     public class District
     {
-
         public int Id { get; set; }
         public string Name { get; set; }
         public Salesperson PrimarySalesperson { get; set; }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DatabaseLink.model
 {
+    [Serializable]
     public class Store
     {
         public int Id { get; set; }

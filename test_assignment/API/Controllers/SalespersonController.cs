@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DatabaseLink.mapper;
+using DatabaseLink.model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -10,15 +12,17 @@ namespace API.Controllers
     public class SalespersonController : ApiController
     {
         // GET: api/Salesperson
-        public IEnumerable<string> Get()
+        public IEnumerable<Salesperson> Get()
         {
-            return new string[] { "value1", "value2" };
+            DBSalesperson db = new DBSalesperson();
+            return db.GetAll();
         }
 
         // GET: api/Salesperson/5
-        public string Get(int id)
+        public Salesperson Get(int id)
         {
-            return "value";
+            DBSalesperson db = new DBSalesperson();
+            return db.Get(id);
         }
 
         // POST: api/Salesperson
