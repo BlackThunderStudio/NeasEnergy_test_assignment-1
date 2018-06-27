@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DatabaseLink.mapper
 {
-    class DBDistrict : IDataAccessObject<District>, ISecondarySalesman
+    public class DBDistrict : IDataAccessObject<District>, ISecondarySalesman
     {
 
         private DBConnect conn = null;
@@ -36,7 +36,7 @@ namespace DatabaseLink.mapper
             }
             catch(Exception e)
             {
-                throw new DataLayerException("Canno assign a secondary salesperson.", e);
+                throw new DataLayerException("Cannot assign a secondary salesperson.", e);
             }
         }
 
