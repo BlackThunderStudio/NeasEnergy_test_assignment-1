@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DatabaseLink
 {
-    interface IDataAccessObject<T>
+    public interface IDataAccessObject<T>
     {
         IEnumerable<T> GetAll();
         T Get(int id);

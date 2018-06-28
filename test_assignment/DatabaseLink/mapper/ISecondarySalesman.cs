@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DatabaseLink.mapper
 {
-    interface ISecondarySalesman
+    public interface ISecondarySalesman
     {
         void AssignSecondary(Salesperson person, District district);
         void DeleteSecondary(Salesperson person, District district);
