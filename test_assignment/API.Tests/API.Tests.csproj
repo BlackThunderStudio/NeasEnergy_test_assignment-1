@@ -98,7 +98,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\DistrictControllerTest.cs" />
     <Compile Include="Controllers\SalespersonControllerTest.cs" />
+    <Compile Include="Controllers\StoreControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
