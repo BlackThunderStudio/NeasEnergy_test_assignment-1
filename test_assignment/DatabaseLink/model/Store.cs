@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DatabaseLink.model
 {
-    [Serializable]
+    [DataContract]
     public class Store
     {
+        [DataMember]
         public int Id { get; set; }
+        [DataMember]
         public string Name { get; set; }
+        [DataMember]
         public string Address { get; set; }
+        [DataMember]
         public District District { get; set; }
     }
 }

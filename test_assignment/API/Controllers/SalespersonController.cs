@@ -26,18 +26,33 @@ namespace API.Controllers
         }
 
         // POST: api/Salesperson
-        public void Post([FromBody]string value)
+        public void Post([FromBody]Salesperson value)
         {
+            DBSalesperson db = new DBSalesperson();
+            if (value != null) {
+                db.Persist(value);
+            }
         }
 
         // PUT: api/Salesperson/5
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody]Salesperson value)
         {
+            DBSalesperson db = new DBSalesperson();
+            if (value != null)
+            {
+                value.Id = id;
+                db.Update(value);
+            }
         }
 
         // DELETE: api/Salesperson/5
-        public void Delete(int id)
+        public void Delete([FromBody]Salesperson value)
         {
+            DBSalesperson db = new DBSalesperson();
+            if (value != null)
+            {
+                db.Delete(value);
+            }
         }
     }
 }
