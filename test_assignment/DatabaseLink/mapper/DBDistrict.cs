@@ -23,7 +23,7 @@ namespace DatabaseLink.mapper
             if (person.Id < 1) throw new DataLayerException("Invalid Salesperson ID!", new ArgumentOutOfRangeException());
             if (district.Id < 1) throw new DataLayerException("Invalid District ID!", new ArgumentOutOfRangeException());
 
-            string qry = $"if exists (select 1 from people where id={person.Id})\n and exists (select 1 from districts where id={district.Id})\n and not exists (select 1 from districtSecondarySalesperson where personid={person.Id} and districtid={district.Id})\n begin\n insert into districtSecondarySalesperson (PersonId,DistrictId) values ({person.Id},{district.Id})\n end";
+            string qry = $"exec spAssignSecondarySalesperson {person.Id},{district.Id}";
             try
             {
                 var link = conn.GetSqlConnection();
@@ -46,25 +46,9 @@ namespace DatabaseLink.mapper
 
             //delete the district itself
             var link = conn.GetSqlConnection();
-            string qry = $"if exists (select 1 from districts where id={t.Id})\n begin\n delete from districts where id={t.Id}\n end";
+            string qry = $"exec spDeleteDistrict {t.Id}";
             try
             {
-                using(SqlCommand cmd = new SqlCommand(qry, link))
-                {
-                    link.Open();
-                    var response = cmd.ExecuteReader();
-                    link.Close();
-                }
-                //when successful, delete the stores within the district
-                qry = $"delete from stores where districtid={t.Id}";
-                using(SqlCommand cmd = new SqlCommand(qry, link))
-                {
-                    link.Open();
-                    var response = cmd.ExecuteReader();
-                    link.Close();
-                }
-                //then delete all the assigned secondary salespeople
-                qry = $"delete from districtSecondarySalesperson where districtid={t.Id}";
                 using(SqlCommand cmd = new SqlCommand(qry, link))
                 {
                     link.Open();
@@ -82,7 +66,7 @@ namespace DatabaseLink.mapper
         {
             if (person.Id < 1 || district.Id < 1) throw new DataLayerException("Illegal ID value. ID value cannot be less or equal zero!", new ArgumentOutOfRangeException());
 
-            string qry = $"delete from districtSecondarySalesperson where personid={person.Id} and districtid={district.Id}";
+            string qry = $"exec spDeleteSecondarySalesperson {person.Id},{district.Id}";
 
             try
             {
@@ -103,7 +87,7 @@ namespace DatabaseLink.mapper
         public District Get(int id)
         {
             if (id < 1) throw new DataLayerException("ID cannot be less than zero!", new ArgumentException());
-            string qry = $"if exists (select 1 from districts where Id={id})\n begin\n select d.*,p.* from districts as d inner join people as p on d.PrimarySalesId=p.Id where d.Id={id}\n end";
+            string qry = $"exec spDistrictGetById {id}";
 
             District district = new District();
             try
@@ -128,7 +112,7 @@ namespace DatabaseLink.mapper
                     }
                     link.Close();
                 }
-                qry = $"if exists (select 1 from districts where Id={id})\n begin\n select p.* from people as p inner join districtSecondarySalesperson as ds on p.Id=ds.PersonId where ds.DistrictId={id}\n end";
+                qry = $"exec spDistrictGetSecondarySalespeopleByDistrictId {id}";
                 using(SqlCommand cmd = new SqlCommand(qry, link))
                 {
                     link.Open();
@@ -164,7 +148,7 @@ namespace DatabaseLink.mapper
 
         public IEnumerable<District> GetAll()
         {
-            string qry = $"select d.Id from districts as d";
+            string qry = $"exec spDistrictIdGetAll";
             List<int> ids = new List<int>();
             List<District> districts = new List<District>();
             try
@@ -208,7 +192,7 @@ namespace DatabaseLink.mapper
             if (t.PrimarySalesperson == null) throw new DataLayerException("Primary salesperson missing!", new ArgumentNullException());
             if (t.Name == null || t.Name.Equals(String.Empty)) throw new DataLayerException("District name missing or empty!", new ArgumentException());
 
-            string qry = $"if not exists (select 1 from districts where id={t.Id})\n begin\n insert into districts (name,primarysalesid) values ('{t.Name}','{t.PrimarySalesperson.Id}')\n end";
+            string qry = $"exec spDistrictCreate '{t.Name}',{t.PrimarySalesperson.Id}";
             try
             {
                 var link = conn.GetSqlConnection();
@@ -232,7 +216,7 @@ namespace DatabaseLink.mapper
             if (t.PrimarySalesperson == null) throw new DataLayerException("Primary salesperson missing!", new ArgumentNullException());
             if (t.PrimarySalesperson.Id < 1) throw new DataLayerException("Invalid primary salesperson ID!", new ArgumentOutOfRangeException());
 
-            string qry = $"if exists (select 1 from districts where id={t.Id})\n begin\n update districts set name='{t.Name}',primarysalesid={t.PrimarySalesperson.Id} where id={t.Id}\n end";
+            string qry = $"exec spDistrictUpdate {t.Id},'{t.Name}',{t.PrimarySalesperson.Id}";
             try
             {
                 var link = conn.GetSqlConnection();
