@@ -11,24 +11,29 @@ namespace API.Controllers
 {
     public class SalespersonController : ApiController
     {
+
+        private DBSalesperson db = null;
+
+        public SalespersonController()
+        {
+            db = new DBSalesperson();
+        }
+
         // GET: api/Salesperson
         public IEnumerable<Salesperson> Get()
         {
-            DBSalesperson db = new DBSalesperson();
             return db.GetAll();
         }
 
         // GET: api/Salesperson/5
         public Salesperson Get(int id)
         {
-            DBSalesperson db = new DBSalesperson();
             return db.Get(id);
         }
 
         // POST: api/Salesperson
         public void Post([FromBody]Salesperson value)
         {
-            DBSalesperson db = new DBSalesperson();
             if (value != null) {
                 db.Persist(value);
             }
@@ -37,7 +42,6 @@ namespace API.Controllers
         // PUT: api/Salesperson/5
         public void Put(int id, [FromBody]Salesperson value)
         {
-            DBSalesperson db = new DBSalesperson();
             if (value != null)
             {
                 value.Id = id;
@@ -48,7 +52,6 @@ namespace API.Controllers
         // DELETE: api/Salesperson/5
         public void Delete([FromBody]Salesperson value)
         {
-            DBSalesperson db = new DBSalesperson();
             if (value != null)
             {
                 db.Delete(value);
