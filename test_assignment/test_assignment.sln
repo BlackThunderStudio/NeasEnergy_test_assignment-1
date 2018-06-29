@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseLink", "DatabaseLin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBLink-tests", "DBLink-tests\DBLink-tests.csproj", "{729C81B7-3218-4047-9DA8-2035B437404B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test-assignment_Tests", "test-assignment_Tests\test-assignment_Tests.csproj", "{B2028A9B-E9C5-4E0E-BAF2-445A20F63F59}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{729C81B7-3218-4047-9DA8-2035B437404B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{729C81B7-3218-4047-9DA8-2035B437404B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{729C81B7-3218-4047-9DA8-2035B437404B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2028A9B-E9C5-4E0E-BAF2-445A20F63F59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2028A9B-E9C5-4E0E-BAF2-445A20F63F59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2028A9B-E9C5-4E0E-BAF2-445A20F63F59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2028A9B-E9C5-4E0E-BAF2-445A20F63F59}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
