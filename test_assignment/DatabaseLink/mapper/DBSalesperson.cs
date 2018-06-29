@@ -17,9 +17,9 @@ namespace DatabaseLink.mapper
 
         public void Delete(Salesperson t)
         {
-            if(t.Id < 1) throw new DataLayerException("Illegal ID value. ID value cannot be less or equal zero!", new ArgumentOutOfRangeException());
+            if(t.Id < 1) throw new DataLayerArgumentException("Illegal ID value. ID value cannot be less or equal zero!", new ArgumentOutOfRangeException());
 
-            string qry = $"if exists ( select 1 from people where Id={t.Id} )\n begin\n delete from people where Id={t.Id}\n end";
+            string qry = $"exec spSalespersonDeleteById {t.Id}";
             try
             {
                 var link = conn.GetSqlConnection();
@@ -36,9 +36,9 @@ namespace DatabaseLink.mapper
 
         public Salesperson Get(int id)
         {
-            string qry = $"select * from people where Id={id}";
+            string qry = $"exec spSalespersonGetById {id}";
 
-            if (id < 1) throw new DataLayerException("ID cannot be less than zero!", new ArgumentException());
+            if (id < 1) throw new DataLayerArgumentException("ID cannot be less than zero!", new ArgumentException());
             Salesperson person = new Salesperson();
             try
             {
@@ -73,7 +73,7 @@ namespace DatabaseLink.mapper
 
         public IEnumerable<Salesperson> GetAll()
         {
-            string qry = "select * from people";
+            string qry = "exec spSalespersonGetAll";
             List<Salesperson> salespeople = new List<Salesperson>();
             try
             {
@@ -114,7 +114,7 @@ namespace DatabaseLink.mapper
             if (t.Name == null) t.Name = String.Empty;
             if (t.LastName == null) t.LastName = String.Empty;
 
-            string qry = $"if not exists (select 1 from people where Name='{t.Name}' and LastName='{t.LastName}')\n begin\n insert into people (name,lastname) values ('{t.Name}','{t.LastName}')\n end";
+            string qry = $"exec spSalespersonCreate '{t.Name}','{t.LastName}'";
             try
             {
                 var link = conn.GetSqlConnection();
@@ -133,11 +133,11 @@ namespace DatabaseLink.mapper
 
         public void Update(Salesperson t)
         {
-            if (t.Name == null || t.LastName == null) throw new DataLayerException("NULL values not allowed", new ArgumentNullException());
-            if (t.Name.Equals(String.Empty) || t.LastName.Equals(String.Empty)) throw new DataLayerException("None of the fields can be empty!");           
-            if (t.Id < 1) throw new DataLayerException("Illegal ID value. ID value cannot be less or equal zero!", new ArgumentOutOfRangeException());
+            if (t.Name == null || t.LastName == null) throw new DataLayerArgumentException("NULL values not allowed", new ArgumentNullException());
+            if (t.Name.Equals(String.Empty) || t.LastName.Equals(String.Empty)) throw new DataLayerArgumentException("None of the fields can be empty!");           
+            if (t.Id < 1) throw new DataLayerArgumentException("Illegal ID value. ID value cannot be less or equal zero!", new ArgumentOutOfRangeException());
 
-            string qry = $"if exists ( select 1 from people where Id={t.Id} )\n begin\n update people set Name='{t.Name}',LastName='{t.LastName}' where Id={t.Id}\n end";
+            string qry = $"exec spSalespersonUpdate {t.Id},'{t.Name}','{t.LastName}'";
             try
             {
                 var link = conn.GetSqlConnection();

@@ -8,24 +8,23 @@ using System.Threading.Tasks;
 namespace DatabaseLink
 {
     [DataContract]
-    public class DataLayerException : Exception
+    public class DataLayerArgumentException : DataLayerException
     {
-
         [DataMember]
         public string ExceptionMessage { get; set; }
         [DataMember]
         public string InnerExceptionMessage { get; set; }
 
-        public DataLayerException()
+        public DataLayerArgumentException()
         {
         }
 
-        public DataLayerException(string message) : base(message)
+        public DataLayerArgumentException(string message) : base(message)
         {
             this.ExceptionMessage = message;
         }
 
-        public DataLayerException(string message, Exception innerException) : base(message, innerException)
+        public DataLayerArgumentException(string message, Exception innerException) : base(message, innerException)
         {
             this.ExceptionMessage = message;
             this.InnerExceptionMessage = innerException.Message;

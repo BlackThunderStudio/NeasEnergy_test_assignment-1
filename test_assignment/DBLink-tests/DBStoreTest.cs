@@ -22,7 +22,7 @@ namespace DBLink_tests
         }
 
         [TestMethod]  
-        [ExpectedException(typeof(DatabaseLink.DataLayerException))]
+        [ExpectedException(typeof(DatabaseLink.DataLayerArgumentException))]
         public void DBStoreTest_Get_Fail_ID()
         {
             DBStore db = new DBStore();
@@ -59,7 +59,7 @@ namespace DBLink_tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DatabaseLink.DataLayerException))]
+        [ExpectedException(typeof(DatabaseLink.DataLayerArgumentException))]
         public void DBStoreTest_Delete_Fail_ID()
         {
             DBStore db = new DBStore();
@@ -70,7 +70,7 @@ namespace DBLink_tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DatabaseLink.DataLayerException))]
+        [ExpectedException(typeof(DatabaseLink.DataLayerArgumentException))]
         public void DBStoreTest_Persist_fail_District()
         {
             DBStore db = new DBStore();
@@ -80,7 +80,7 @@ namespace DBLink_tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DatabaseLink.DataLayerException))]
+        [ExpectedException(typeof(DatabaseLink.DataLayerArgumentException))]
         public void DBStoreTest_Persist_fail_DistrictID()
         {
             DBStore db = new DBStore();
@@ -117,7 +117,7 @@ namespace DBLink_tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DatabaseLink.DataLayerException))]
+        [ExpectedException(typeof(DatabaseLink.DataLayerArgumentException))]
         public void DBStoreTest_Update_fail_ID()
         {
             DBStore db = new DBStore();
@@ -127,7 +127,7 @@ namespace DBLink_tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DatabaseLink.DataLayerException))]
+        [ExpectedException(typeof(DatabaseLink.DataLayerArgumentException))]
         public void DBStoreTest_Update_fail_District()
         {
             DBStore db = new DBStore();
@@ -137,7 +137,7 @@ namespace DBLink_tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DatabaseLink.DataLayerException))]
+        [ExpectedException(typeof(DatabaseLink.DataLayerArgumentException))]
         public void DBStoreTest_Update_fail_DistrictID()
         {
             DBStore db = new DBStore();

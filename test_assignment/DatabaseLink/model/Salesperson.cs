@@ -16,5 +16,13 @@ namespace DatabaseLink.model
         public string Name { get; set; }
         [DataMember]
         public string LastName { get; set; }
+
+        //for error control
+        [DataMember]
+        public bool IsFaulted { get; set; }
+        [DataMember]
+        public DataLayerException DataLayerException { get; set; }
+        [DataMember]
+        public DataLayerArgumentException DataLayerArgumentException { get; set; }
     }
 }

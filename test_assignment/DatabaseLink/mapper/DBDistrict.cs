@@ -20,8 +20,8 @@ namespace DatabaseLink.mapper
 
         public void AssignSecondary(Salesperson person, District district)
         {
-            if (person.Id < 1) throw new DataLayerException("Invalid Salesperson ID!", new ArgumentOutOfRangeException());
-            if (district.Id < 1) throw new DataLayerException("Invalid District ID!", new ArgumentOutOfRangeException());
+            if (person.Id < 1) throw new DataLayerArgumentException("Invalid Salesperson ID!", new ArgumentOutOfRangeException());
+            if (district.Id < 1) throw new DataLayerArgumentException("Invalid District ID!", new ArgumentOutOfRangeException());
 
             string qry = $"exec spAssignSecondarySalesperson {person.Id},{district.Id}";
             try
@@ -42,7 +42,7 @@ namespace DatabaseLink.mapper
 
         public void Delete(District t)
         {
-            if (t.Id < 1) throw new DataLayerException("Illegal ID value. ID value cannot be less or equal zero!", new ArgumentOutOfRangeException());
+            if (t.Id < 1) throw new DataLayerArgumentException("Illegal ID value. ID value cannot be less or equal zero!", new ArgumentOutOfRangeException());
 
             //delete the district itself
             var link = conn.GetSqlConnection();
@@ -64,7 +64,7 @@ namespace DatabaseLink.mapper
 
         public void DeleteSecondary(Salesperson person, District district)
         {
-            if (person.Id < 1 || district.Id < 1) throw new DataLayerException("Illegal ID value. ID value cannot be less or equal zero!", new ArgumentOutOfRangeException());
+            if (person.Id < 1 || district.Id < 1) throw new DataLayerArgumentException("Illegal ID value. ID value cannot be less or equal zero!", new ArgumentOutOfRangeException());
 
             string qry = $"exec spDeleteSecondarySalesperson {person.Id},{district.Id}";
 
@@ -86,7 +86,7 @@ namespace DatabaseLink.mapper
 
         public District Get(int id)
         {
-            if (id < 1) throw new DataLayerException("ID cannot be less than zero!", new ArgumentException());
+            if (id < 1) throw new DataLayerArgumentException("ID cannot be less than zero!", new ArgumentException());
             string qry = $"exec spDistrictGetById {id}";
 
             District district = new District();
@@ -189,8 +189,8 @@ namespace DatabaseLink.mapper
 
         public void Persist(District t)
         {
-            if (t.PrimarySalesperson == null) throw new DataLayerException("Primary salesperson missing!", new ArgumentNullException());
-            if (t.Name == null || t.Name.Equals(String.Empty)) throw new DataLayerException("District name missing or empty!", new ArgumentException());
+            if (t.PrimarySalesperson == null) throw new DataLayerArgumentException("Primary salesperson missing!", new ArgumentNullException());
+            if (t.Name == null || t.Name.Equals(String.Empty)) throw new DataLayerArgumentException("District name missing or empty!", new ArgumentException());
 
             string qry = $"exec spDistrictCreate '{t.Name}',{t.PrimarySalesperson.Id}";
             try
@@ -211,10 +211,10 @@ namespace DatabaseLink.mapper
 
         public void Update(District t)
         {
-            if (t.Id < 1) throw new DataLayerException("Invalid district ID!", new ArgumentOutOfRangeException());
+            if (t.Id < 1) throw new DataLayerArgumentException("Invalid district ID!", new ArgumentOutOfRangeException());
             if (t.Name == null) t.Name = String.Empty;
-            if (t.PrimarySalesperson == null) throw new DataLayerException("Primary salesperson missing!", new ArgumentNullException());
-            if (t.PrimarySalesperson.Id < 1) throw new DataLayerException("Invalid primary salesperson ID!", new ArgumentOutOfRangeException());
+            if (t.PrimarySalesperson == null) throw new DataLayerArgumentException("Primary salesperson missing!", new ArgumentNullException());
+            if (t.PrimarySalesperson.Id < 1) throw new DataLayerArgumentException("Invalid primary salesperson ID!", new ArgumentOutOfRangeException());
 
             string qry = $"exec spDistrictUpdate {t.Id},'{t.Name}',{t.PrimarySalesperson.Id}";
             try

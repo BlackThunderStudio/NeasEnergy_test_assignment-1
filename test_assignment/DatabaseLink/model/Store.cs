@@ -18,5 +18,13 @@ namespace DatabaseLink.model
         public string Address { get; set; }
         [DataMember]
         public District District { get; set; }
+
+        //for error control
+        [DataMember]
+        public bool IsFaulted { get; set; }
+        [DataMember]
+        public DataLayerException DataLayerException { get; set; }
+        [DataMember]
+        public DataLayerArgumentException DataLayerArgumentException { get; set; }
     }
 }

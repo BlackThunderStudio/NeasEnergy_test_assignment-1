@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataLayerArgumentException.cs" />
     <Compile Include="DataLayerException.cs" />
     <Compile Include="DBConnect.cs" />
     <Compile Include="IDataAccessObject.cs" />

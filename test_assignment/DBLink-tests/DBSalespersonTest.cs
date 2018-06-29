@@ -23,7 +23,7 @@ namespace DBLink_tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DatabaseLink.DataLayerException))]
+        [ExpectedException(typeof(DatabaseLink.DataLayerArgumentException))]
         public void DBSalespersonTest_Get_invalidID()
         {
             DBSalesperson dBSalesperson = new DBSalesperson();
@@ -71,7 +71,7 @@ namespace DBLink_tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DatabaseLink.DataLayerException))]
+        [ExpectedException(typeof(DatabaseLink.DataLayerArgumentException))]
         public void DBSalespersonTest_Delete_Fail_ID()
         {
             DBSalesperson dBSalesperson = new DBSalesperson();
@@ -82,7 +82,7 @@ namespace DBLink_tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DatabaseLink.DataLayerException))]
+        [ExpectedException(typeof(DatabaseLink.DataLayerArgumentException))]
         public void DBSalespersonTest_Update_Fail_Name()
         {
             DBSalesperson db = new DBSalesperson();
@@ -94,7 +94,7 @@ namespace DBLink_tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DatabaseLink.DataLayerException))]
+        [ExpectedException(typeof(DatabaseLink.DataLayerArgumentException))]
         public void DBSalespersonTest_Update_Fail_LastName()
         {
             DBSalesperson db = new DBSalesperson();
@@ -105,7 +105,7 @@ namespace DBLink_tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DatabaseLink.DataLayerException))]
+        [ExpectedException(typeof(DatabaseLink.DataLayerArgumentException))]
         public void DBSalespersonTest_Update_Fail_ID()
         {
             DBSalesperson db = new DBSalesperson();

@@ -29,7 +29,7 @@ namespace DBLink_tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DatabaseLink.DataLayerException))]
+        [ExpectedException(typeof(DatabaseLink.DataLayerArgumentException))]
         public void DBDistrictTest_AssignSecondary_fail_PersonID()
         {
             DBDistrict db = new DBDistrict();
@@ -39,7 +39,7 @@ namespace DBLink_tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DatabaseLink.DataLayerException))]
+        [ExpectedException(typeof(DatabaseLink.DataLayerArgumentException))]
         public void DBDistrictTest_AssignSecondary_fail_DistrictID()
         {
             DBDistrict db = new DBDistrict();
@@ -49,7 +49,7 @@ namespace DBLink_tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DatabaseLink.DataLayerException))]
+        [ExpectedException(typeof(DatabaseLink.DataLayerArgumentException))]
         public void DBDistrictTest_DeleteSecondary_fail_PersonID()
         {
             DBDistrict db = new DBDistrict();
@@ -59,7 +59,7 @@ namespace DBLink_tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DatabaseLink.DataLayerException))]
+        [ExpectedException(typeof(DatabaseLink.DataLayerArgumentException))]
         public void DBDistrictTest_DeleteSecondary_fail_DistrictID()
         {
             DBDistrict db = new DBDistrict();
@@ -81,7 +81,7 @@ namespace DBLink_tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DatabaseLink.DataLayerException))]
+        [ExpectedException(typeof(DatabaseLink.DataLayerArgumentException))]
         public void DBDistrictTest_Get_fail_ID()
         {
             DBDistrict db = new DBDistrict();

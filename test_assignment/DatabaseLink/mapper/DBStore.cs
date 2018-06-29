@@ -20,9 +20,9 @@ namespace DatabaseLink.mapper
 
         public void Delete(Store t)
         {
-            if (t.Id < 1) throw new DataLayerException("Illegal ID value. ID value cannot be less or equal zero!", new ArgumentOutOfRangeException());
+            if (t.Id < 1) throw new DataLayerArgumentException("Illegal ID value. ID value cannot be less or equal zero!", new ArgumentOutOfRangeException());
 
-            string qry = $"if exists (select 1 from stores where Id={t.Id})\n begin\n delete from stores where Id={t.Id}\n end";
+            string qry = $"exec spStoreDeleteById {t.Id}";
             try
             {
                 var link = conn.GetSqlConnection();
@@ -41,8 +41,8 @@ namespace DatabaseLink.mapper
 
         public Store Get(int id)
         {
-            if (id < 1) throw new DataLayerException("ID cannot be less than zero!", new ArgumentException());
-            string qry = $"if exists (select 1 from stores where Id={id})\n begin\n select s.Id,s.Name,s.Address,d.Id,d.Name,p.Id,p.Name,p.LastName from stores as s inner join districts as d on s.DistrictId=d.Id inner join people as p on p.Id=d.PrimarySalesId where s.Id={id}\n end";
+            if (id < 1) throw new DataLayerArgumentException("ID cannot be less than zero!", new ArgumentException());
+            string qry = $"exec spStoreGetById {id}";
 
             Store store = new Store();
             try
@@ -84,7 +84,7 @@ namespace DatabaseLink.mapper
 
         public IEnumerable<Store> GetAll()
         {
-            string qry = "select s.Id,s.Name,s.Address,d.Id,d.Name,p.Id,p.Name,p.LastName from stores as s inner join districts as d on s.DistrictId=d.Id inner join people as p on p.Id=d.PrimarySalesId";
+            string qry = "exec spStoreGetAll";
             List<Store> stores = new List<Store>();
             try
             {
@@ -129,10 +129,10 @@ namespace DatabaseLink.mapper
 
         public void Persist(Store t)
         {
-            if (t.District == null) throw new DataLayerException("District information missing!", new ArgumentNullException());
-            if (t.District.Id < 1) throw new DataLayerException("Invalid district ID!", new ArgumentOutOfRangeException());
+            if (t.District == null) throw new DataLayerArgumentException("District information missing!", new ArgumentNullException());
+            if (t.District.Id < 1) throw new DataLayerArgumentException("Invalid district ID!", new ArgumentOutOfRangeException());
 
-            string qry = $"if not exists (select 1 from stores where Name='{t.Name}' and address='{t.Address}')\n begin\n insert into stores (name,address,districtid) values ('{t.Name}','{t.Address}',{t.District.Id})\n end";
+            string qry = $"exec spStoreCreate '{t.Name}','{t.Address}',{t.District.Id}";
 
             try
             {
@@ -152,13 +152,13 @@ namespace DatabaseLink.mapper
 
         public void Update(Store t)
         {
-            if (t.Id < 1) throw new DataLayerException("Invalid store ID!", new ArgumentOutOfRangeException());
-            if (t.District == null) throw new DataLayerException("District information missing!", new ArgumentNullException());
-            if (t.District.Id < 1) throw new DataLayerException("Invalid district ID!", new ArgumentOutOfRangeException());
+            if (t.Id < 1) throw new DataLayerArgumentException("Invalid store ID!", new ArgumentOutOfRangeException());
+            if (t.District == null) throw new DataLayerArgumentException("District information missing!", new ArgumentNullException());
+            if (t.District.Id < 1) throw new DataLayerArgumentException("Invalid district ID!", new ArgumentOutOfRangeException());
             if (t.Name == null) t.Name = String.Empty;
             if (t.Address == null) t.Address = String.Empty;
 
-            string qry = $"if exists (select 1 from stores where id={t.Id})\n begin\n update stores set name='{t.Name}',address='{t.Address}',districtid='{t.District.Id}' where id={t.Id}\n end";
+            string qry = $"exec spStoreUpdate {t.Id},'{t.Name}','{t.Address}',{t.District.Id}";
             try
             {
                 var link = conn.GetSqlConnection();
