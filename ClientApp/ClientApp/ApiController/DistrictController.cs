@@ -16,7 +16,7 @@ namespace ClientApp.ApiController
 
         public DistrictController()
         {
-            client = new RestClient<District>();
+            client = new HttpRestHandler<District>();
         }
 
         public async Task DeleteAsync(int id)
@@ -24,14 +24,14 @@ namespace ClientApp.ApiController
             string path = $"{DEFAULT_PATH}/{id}";
             client.Endpoint = Endpoint;
             var district = await client.Delete(path);
-            if (district.IsFaulted) throw new ApiException(district.DataLayerArgumentException == null ? district.DataLayerException : district.DataLayerArgumentException);
+            if (district.IsFaulted) throw new ApiException(district.DataLayerArgumentException ?? district.DataLayerException);
         }
 
         public async Task<IEnumerable<District>> GetAllAsync()
         {
             client.Endpoint = Endpoint;
             IEnumerable<District> districts = await client.GetCollection(DEFAULT_PATH);
-            if (districts.ToList()[0].IsFaulted) throw new ApiException(districts.ToList()[0].DataLayerArgumentException == null ? districts.ToList()[0].DataLayerException : districts.ToList()[0].DataLayerArgumentException);
+            if (districts.ToList()[0].IsFaulted) throw new ApiException(districts.ToList()[0].DataLayerArgumentException ?? districts.ToList()[0].DataLayerException);
             return districts;
         }
 
@@ -40,7 +40,7 @@ namespace ClientApp.ApiController
             string path = $"{DEFAULT_PATH}/{id}";
             client.Endpoint = Endpoint;
             var district = await client.GetSingle(path);
-            if (district.IsFaulted) throw new ApiException(district.DataLayerArgumentException == null ? district.DataLayerException : district.DataLayerArgumentException);
+            if (district.IsFaulted) throw new ApiException(district.DataLayerArgumentException ?? district.DataLayerException);
             return district;
         }
 
@@ -48,7 +48,7 @@ namespace ClientApp.ApiController
         {
             client.Endpoint = Endpoint;
             var district = await client.Post(DEFAULT_PATH, t);
-            if (district.IsFaulted) throw new ApiException(district.DataLayerArgumentException == null ? district.DataLayerException : district.DataLayerArgumentException);
+            if (district.IsFaulted) throw new ApiException(district.DataLayerArgumentException ?? district.DataLayerException);
         }
 
         public async Task UpdateAsync(District t)
@@ -56,7 +56,7 @@ namespace ClientApp.ApiController
             string path = $"{DEFAULT_PATH}/{t.Id}";
             client.Endpoint = Endpoint;
             var district = await client.Put(path, t);
-            if (district.IsFaulted) throw new ApiException(district.DataLayerArgumentException == null ? district.DataLayerException : district.DataLayerArgumentException);
+            if (district.IsFaulted) throw new ApiException(district.DataLayerArgumentException ?? district.DataLayerException);
         }
 
         public async Task AssignSecondaryAsync(Salesperson person, District district)
@@ -64,7 +64,7 @@ namespace ClientApp.ApiController
             string path = $"{DEFAULT_PATH}/{district.Id}/secondary-sales/add/{person.Id}";
             client.Endpoint = Endpoint;
             var response = await client.Post(path, new District());
-            if (response.IsFaulted) throw new ApiException(response.DataLayerArgumentException == null ? response.DataLayerException : response.DataLayerArgumentException);
+            if (response.IsFaulted) throw new ApiException(response.DataLayerArgumentException ?? response.DataLayerException);
         }
 
         public async Task DeleteSecondaryAsync(Salesperson person, District district)
@@ -72,7 +72,7 @@ namespace ClientApp.ApiController
             string path = $"{DEFAULT_PATH}/{district.Id}/secondary-sales/delete/{person.Id}";
             client.Endpoint = Endpoint;
             var response = await client.Post(path, new District());
-            if (response.IsFaulted) throw new ApiException(response.DataLayerArgumentException == null ? response.DataLayerException : response.DataLayerArgumentException);
+            if (response.IsFaulted) throw new ApiException(response.DataLayerArgumentException ?? response.DataLayerException);
         }
     }
 }

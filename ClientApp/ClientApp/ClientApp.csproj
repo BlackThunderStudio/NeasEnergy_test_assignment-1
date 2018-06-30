@@ -81,6 +81,7 @@
     <Compile Include="ApiController\ISecondarySalesman.cs" />
     <Compile Include="ApiController\RestClient.cs" />
     <Compile Include="ApiController\SalespersonController.cs" />
+    <Compile Include="ApiController\StoreController.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>

@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="ApiController\DistrictControllerTest.cs" />
     <Compile Include="ApiController\SalespersonControllerTest.cs" />
+    <Compile Include="ApiController\StoreControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

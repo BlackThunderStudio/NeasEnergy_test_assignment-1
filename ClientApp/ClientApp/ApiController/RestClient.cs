@@ -12,11 +12,11 @@ using System.Net.Http.Headers;
 namespace ClientApp.ApiController
 {
 
-    class RestClient<TResult> : IRestClient<TResult>
+    class HttpRestHandler<TResult> : IRestClient<TResult>
     {
         public string Endpoint { get; set; }
 
-        public RestClient()
+        public HttpRestHandler()
         {
             Endpoint = String.Empty;
         }

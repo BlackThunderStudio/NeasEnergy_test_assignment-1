@@ -16,7 +16,7 @@ namespace ClientApp.ApiController
 
         public SalespersonController()
         {
-            client = new RestClient<Salesperson>();
+            client = new HttpRestHandler<Salesperson>();
         }
 
         public async Task<Salesperson> GetAsync(int id)
@@ -24,7 +24,7 @@ namespace ClientApp.ApiController
             string path = $"{DEFAULT_PATH}/{id}";
             client.Endpoint = Endpoint;
             Salesperson person = await client.GetSingle(path);
-            if (person.IsFaulted) throw new ApiException(person.DataLayerArgumentException == null ? person.DataLayerException : person.DataLayerArgumentException);
+            if (person.IsFaulted) throw new ApiException(person.DataLayerArgumentException ?? person.DataLayerException);
             return person;
         }
 
@@ -32,7 +32,7 @@ namespace ClientApp.ApiController
         {
             client.Endpoint = Endpoint;
             IEnumerable<Salesperson> people = await client.GetCollection(DEFAULT_PATH);
-            if (people.ToList()[0].IsFaulted) throw new ApiException(people.ToList()[0].DataLayerArgumentException == null ? people.ToList()[0].DataLayerException : people.ToList()[0].DataLayerArgumentException);
+            if (people.ToList()[0].IsFaulted) throw new ApiException(people.ToList()[0].DataLayerArgumentException ?? people.ToList()[0].DataLayerException);
             return people;
         }
 
@@ -40,7 +40,7 @@ namespace ClientApp.ApiController
         {
             client.Endpoint = Endpoint;
             Salesperson person = await client.Post(DEFAULT_PATH, t);
-            if (person.IsFaulted) throw new ApiException(person.DataLayerArgumentException == null ? person.DataLayerException : person.DataLayerArgumentException);
+            if (person.IsFaulted) throw new ApiException(person.DataLayerArgumentException ?? person.DataLayerException);
         }
 
         public async Task UpdateAsync(Salesperson t)
@@ -48,7 +48,7 @@ namespace ClientApp.ApiController
             string path = $"{DEFAULT_PATH}/{t.Id}";
             client.Endpoint = Endpoint;
             var person = await client.Put(path, t);
-            if (person.IsFaulted) throw new ApiException(person.DataLayerArgumentException == null ? person.DataLayerException : person.DataLayerArgumentException);
+            if (person.IsFaulted) throw new ApiException(person.DataLayerArgumentException ?? person.DataLayerException);
         }
 
         public async Task DeleteAsync(int id)
@@ -56,7 +56,7 @@ namespace ClientApp.ApiController
             string path = $"{DEFAULT_PATH}/{id}";
             client.Endpoint = Endpoint;
             var person = await client.Delete(path);
-            if (person.IsFaulted) throw new ApiException(person.DataLayerArgumentException == null ? person.DataLayerException : person.DataLayerArgumentException);
+            if (person.IsFaulted) throw new ApiException(person.DataLayerArgumentException ?? person.DataLayerException);
         }
     }
 }
