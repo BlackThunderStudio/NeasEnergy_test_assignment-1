@@ -75,8 +75,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ApiController\Auth.cs" />
+    <Compile Include="ApiController\DistrictController.cs" />
     <Compile Include="ApiController\IRestClient.cs" />
     <Compile Include="ApiController\IRestController.cs" />
+    <Compile Include="ApiController\ISecondarySalesman.cs" />
     <Compile Include="ApiController\RestClient.cs" />
     <Compile Include="ApiController\SalespersonController.cs" />
     <Compile Include="App.xaml.cs">
