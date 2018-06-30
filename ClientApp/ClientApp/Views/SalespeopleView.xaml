@@ -24,19 +24,18 @@
         <DataGrid x:Name="DataGrid" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2"
                   ScrollViewer.CanContentScroll="True" 
                   ScrollViewer.VerticalScrollBarVisibility="Auto"
-                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                  ItemsSource="{Binding Salespeople}">
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto">
 
             <DataGrid.Resources>
-                <Style TargetType="{x:Type DataGridColumnHeader}">
+                <!--<Style TargetType="{x:Type DataGridColumnHeader}">
                     <Setter Property="Background" Value="#FF64A0FF"/>
                     <Setter Property="BorderThickness" Value="1,1,1,1"/>
                     <Setter Property="BorderBrush" Value="#88000000" />
-                </Style>
+                </Style>-->
             </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Width="150"/>
-                <DataGridTextColumn Header="Last Name" Width="150"/>
+                <DataGridTextColumn Header="Name" Width="150" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Last Name" Width="150" Binding="{Binding LastName}"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

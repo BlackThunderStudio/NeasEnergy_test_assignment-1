@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using ClientApp.ApiController;
-using ClientApp.Models;
+using ClientApp.Models.DatabaseModels;
 using ClientApp.Models.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

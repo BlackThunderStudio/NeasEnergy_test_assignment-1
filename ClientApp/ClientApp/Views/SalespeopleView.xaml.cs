@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ClientApp.ApiController;
+using ClientApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +22,15 @@ namespace ClientApp.Views
     /// </summary>
     public partial class SalespeopleView : UserControl
     {
+        private SalespersonController controller;
+        List<Salesperson> people;
+
         public SalespeopleView()
         {
             InitializeComponent();
+            controller = new SalespersonController();
+            controller.Endpoint = "http://localhost:50209/";
+            
         }
     }
 }

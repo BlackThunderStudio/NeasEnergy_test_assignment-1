@@ -1,30 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using ClientApp.Models.DatabaseModels;
 
 namespace ClientApp.Models
 {
-    [DataContract]
-    public class District
+    class District : Model<DatabaseModels.District, District>
     {
-        [DataMember]
         public int Id { get; set; }
-        [DataMember]
         public string Name { get; set; }
-        [DataMember]
         public Salesperson PrimarySalesperson { get; set; }
-        [DataMember]
         public IEnumerable<Salesperson> SecondarySalespeople { get; set; }
 
-        //for error control
-        [DataMember]
-        public bool IsFaulted { get; set; }
-        [DataMember]
-        public string DataLayerException { get; set; }
-        [DataMember]
-        public string DataLayerArgumentException { get; set; }
+        public override District FromDatabaseModel(DatabaseModels.District databaseModel)
+        {
+            IEnumerable<Salesperson> secondarySales = databaseModel.SecondarySalespeople.Select(x => new Salesperson().FromDatabaseModel(x));
+            return new District()
+            {
+                Id = databaseModel.Id,
+                Name = databaseModel.Name,
+                PrimarySalesperson = new Salesperson().FromDatabaseModel(databaseModel.PrimarySalesperson),
+                SecondarySalespeople = secondarySales
+            };
+        }
+
+        public override DatabaseModels.District ToDatabaseModel(District clientModel)
+        {
+            IEnumerable<DatabaseModels.Salesperson> secondarySales = clientModel.SecondarySalespeople.Select(x => new Salesperson().ToDatabaseModel(x));
+            return new DatabaseModels.District()
+            {
+                Id = clientModel.Id,
+                Name = clientModel.Name,
+                PrimarySalesperson = new Salesperson().ToDatabaseModel(clientModel.PrimarySalesperson),
+                SecondarySalespeople = secondarySales
+            };
+        }
     }
 }

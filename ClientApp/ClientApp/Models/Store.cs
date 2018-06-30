@@ -1,30 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using ClientApp.Models.DatabaseModels;
 
 namespace ClientApp.Models
 {
-    [DataContract]
-    public class Store
+    class Store : Model<DatabaseModels.Store, Store>
     {
-        [DataMember]
         public int Id { get; set; }
-        [DataMember]
         public string Name { get; set; }
-        [DataMember]
         public string Address { get; set; }
-        [DataMember]
         public District District { get; set; }
 
-        //for error control
-        [DataMember]
-        public bool IsFaulted { get; set; }
-        [DataMember]
-        public string DataLayerException { get; set; }
-        [DataMember]
-        public string DataLayerArgumentException { get; set; }
+        public override Store FromDatabaseModel(DatabaseModels.Store databaseModel)
+        {
+            return new Store()
+            {
+                Id = databaseModel.Id,
+                Name = databaseModel.Name,
+                Address = databaseModel.Address,
+                District = new District().FromDatabaseModel(databaseModel.District)
+            };
+        }
+
+        public override DatabaseModels.Store ToDatabaseModel(Store clientModel)
+        {
+            return new DatabaseModels.Store()
+            {
+                Id = clientModel.Id,
+                Name = clientModel.Name,
+                Address = clientModel.Address,
+                District = new District().ToDatabaseModel(clientModel.District)
+            };
+        }
     }
 }

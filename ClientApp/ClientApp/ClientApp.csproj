@@ -90,10 +90,14 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\DatabaseModels\District.cs" />
     <Compile Include="Models\District.cs" />
     <Compile Include="Models\Exceptions\ApiException.cs" />
     <Compile Include="Models\Exceptions\DataLayerArgumentException.cs" />
     <Compile Include="Models\Exceptions\DataLayerException.cs" />
+    <Compile Include="Models\DatabaseModels\Salesperson.cs" />
+    <Compile Include="Models\DatabaseModels\Store.cs" />
+    <Compile Include="Models\Model.cs" />
     <Compile Include="Models\Salesperson.cs" />
     <Compile Include="Models\Store.cs" />
     <Compile Include="ViewModels\DistrictsViewModel.cs" />

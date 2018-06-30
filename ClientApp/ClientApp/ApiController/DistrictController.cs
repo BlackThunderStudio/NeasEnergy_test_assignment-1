@@ -1,4 +1,4 @@
-﻿using ClientApp.Models;
+﻿using ClientApp.Models.DatabaseModels;
 using ClientApp.Models.Exceptions;
 using System;
 using System.Collections.Generic;

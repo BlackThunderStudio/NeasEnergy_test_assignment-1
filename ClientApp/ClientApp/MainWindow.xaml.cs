@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClientApp.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,17 +27,20 @@ namespace ClientApp
 
         private void ViewSalespeople_Click(object sender, RoutedEventArgs e)
         {
-
+            SalespeopleView salespeopleView = new SalespeopleView();
+            ActiveItem.Content = salespeopleView;
         }
 
         private void ViewDistricts_Click(object sender, RoutedEventArgs e)
         {
-
+            DistrictsView districtsView = new DistrictsView();
+            ActiveItem.Content = districtsView;
         }
 
         private void ViewStores_Click(object sender, RoutedEventArgs e)
         {
-
+            StoresView storesView = new StoresView();
+            ActiveItem.Content = storesView;
         }
     }
 }
