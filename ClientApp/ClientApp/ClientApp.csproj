@@ -87,6 +87,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\District.cs" />
     <Compile Include="Models\Exceptions\ApiException.cs" />
     <Compile Include="Models\Exceptions\DataLayerArgumentException.cs" />
@@ -138,6 +141,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\DistrictsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
