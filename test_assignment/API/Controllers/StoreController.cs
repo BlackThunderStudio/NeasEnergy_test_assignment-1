@@ -120,29 +120,25 @@ namespace API.Controllers
         }
 
         // DELETE api/<controller>/5
-        public Store Delete([FromBody]Store value)
+        public Store Delete(int id)
         {
-            if(value != null)
+            var faulted = new Store() { IsFaulted = false };
+            try
             {
-                var faulted = new Store() { IsFaulted = false };
-                try
-                {
-                    db.Delete(value);
-                    return faulted;
-                }
-                catch (DatabaseLink.DataLayerArgumentException e)
-                {
-                    faulted.IsFaulted = true;
-                    faulted.DataLayerArgumentException = e.Message;
-                }
-                catch (DatabaseLink.DataLayerException e)
-                {
-                    faulted.IsFaulted = true;
-                    faulted.DataLayerException = e.Message;
-                }
+                db.Delete(id);
                 return faulted;
             }
-            return null;
+            catch (DatabaseLink.DataLayerArgumentException e)
+            {
+                faulted.IsFaulted = true;
+                faulted.DataLayerArgumentException = e.Message;
+            }
+            catch (DatabaseLink.DataLayerException e)
+            {
+                faulted.IsFaulted = true;
+                faulted.DataLayerException = e.Message;
+            }
+            return faulted;
         }
     }
 }

@@ -8,10 +8,12 @@ namespace ClientApp.ApiController
 {
     public interface IRestController<T>
     {
+        string Endpoint { get; set; }
+
         Task<T> GetAsync(int id);
         Task<IEnumerable<T>> GetAllAsync();
         Task PersistAsync(T t);
         Task UpdateAsync(T t);
-        Task DeleteAsync(T t);
+        Task DeleteAsync(int id);
     }
 }

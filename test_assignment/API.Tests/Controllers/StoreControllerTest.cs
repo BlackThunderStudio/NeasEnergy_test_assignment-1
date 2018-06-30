@@ -55,7 +55,7 @@ namespace API.Tests.Controllers
             Assert.AreNotEqual(countOld, countNew);
 
             store = controller.Get().ToList().SingleOrDefault(x => { return (x.Name.Equals(store.Name) && x.Address.Equals(store.Address)); });
-            controller.Delete(store);
+            controller.Delete(store.Id);
             countNew = controller.Get().Count();
 
             Assert.AreEqual(countOld, countNew);

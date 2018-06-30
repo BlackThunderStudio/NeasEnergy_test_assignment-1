@@ -47,7 +47,7 @@ namespace API.Tests.Controllers
 
             person = controller.Get().ToList().SingleOrDefault(x => { return (x.Name.Equals(person.Name) && x.LastName.Equals(person.LastName)); });
 
-            controller.Delete(person);
+            controller.Delete(person.Id);
         }
 
         [TestMethod]

@@ -5,14 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClientApp.Views"
         mc:Ignorable="d"
-        Title="ShellView" Height="450" Width="800">
+        Title="ShellView" Height="800" Width="1200">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="20" />
@@ -23,15 +19,14 @@
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="20" />
         </Grid.ColumnDefinitions>
-        <TextBlock x:Name="FirstName" Grid.Column="1" Width="100" Grid.Row="1" FontSize="18"/>
-        <TextBlock x:Name="LastName" Grid.Column="1" Width="100" Grid.Row="2" FontSize="18"/>
-        <Button x:Name="GetPersonAsync" Grid.Column="1" Grid.Row="3" Content="Get"/>
+        <Button x:Name="ViewSalespeople" Grid.Column="1" Grid.Row="1" Content="View Salespeople" Padding="10,5,10,5" Margin="10,5,10,5"/>
+        <Button x:Name="ViewDistricts" Grid.Column="2" Grid.Row="1" Content="View Districts" Padding="10,5,10,5" Margin="10,5,10,5"/>
+        <Button x:Name="ViewStores" Grid.Column="3" Grid.Row="1" Content="View Stores" Padding="10,5,10,5" Margin="10,5,10,5" />
+
+        <ContentControl Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="2" 
+                        x:Name="ActiveItem" />
     </Grid>
 </Window>

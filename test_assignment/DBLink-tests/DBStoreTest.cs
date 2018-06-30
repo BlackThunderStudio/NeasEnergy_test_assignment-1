@@ -55,7 +55,7 @@ namespace DBLink_tests
 
             var selected = db.GetAll().ToList().SingleOrDefault(x => { return (x.Name == "Nike" && x.Address == "Milton Road 4420");});
 
-            db.Delete(selected);
+            db.Delete(selected.Id);
         }
 
         [TestMethod]
@@ -66,7 +66,7 @@ namespace DBLink_tests
 
             var store = new Store() { Id = -23, Name = "asdasd", Address = "werwr3" };
 
-            db.Delete(store);
+            db.Delete(store.Id);
         }
 
         [TestMethod]

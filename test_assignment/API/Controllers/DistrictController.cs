@@ -118,29 +118,25 @@ namespace API.Controllers
         }
 
         // DELETE api/<controller>/5
-        public District Delete([FromBody]District value)
+        public District Delete(int id)
         {
-            if(value != null)
+            var faulted = new District();
+            try
             {
-                var faulted = new District();
-                try
-                {
-                    db.Delete(value);
-                    return new District() { IsFaulted = false };
-                }
-                catch (DataLayerArgumentException e)
-                {
-                    faulted.IsFaulted = true;
-                    faulted.DataLayerArgumentException = e.Message;
-                }
-                catch (DataLayerException e)
-                {
-                    faulted.IsFaulted = true;
-                    faulted.DataLayerException = e.Message;
-                }
-                return faulted;
+                db.Delete(id);
+                return new District() { IsFaulted = false };
             }
-            return null;
+            catch (DataLayerArgumentException e)
+            {
+                faulted.IsFaulted = true;
+                faulted.DataLayerArgumentException = e.Message;
+            }
+            catch (DataLayerException e)
+            {
+                faulted.IsFaulted = true;
+                faulted.DataLayerException = e.Message;
+            }
+            return faulted;
         }
 
         [Route("api/district/{districtId}/secondary-sales/add/{personId}")]

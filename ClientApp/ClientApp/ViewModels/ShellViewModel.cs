@@ -9,54 +9,27 @@ using System.Threading.Tasks;
 
 namespace ClientApp.ViewModels
 {
-    class ShellViewModel : Screen
+    class ShellViewModel : Conductor<object>
     {
-        private Salesperson _person;
-        private string _fname;
-        private string _lname;
-        private SalespersonController api;
 
         public ShellViewModel()
         {
-            api = new SalespersonController();
-            api.Endpoint = "http://localhost:50209/";
+
         }
 
-        public Salesperson Person
+        public void ViewSalespeople()
         {
-            get { return _person; }
-            set
-            {
-                _person = value;
-                NotifyOfPropertyChange(() => Person);
-            }
+            ActivateItem(new SalespeopleViewModel());
         }
 
-        public string FirstName
+        public void ViewDistricts()
         {
-            get { return _fname; }
-            set
-            {
-                _fname = value;
-                NotifyOfPropertyChange(() => FirstName);
-            }
+            ActivateItem(new DistrictsViewModel());
         }
 
-        public string LastName
+        public void ViewStores()
         {
-            get { return _lname; }
-            set
-            {
-                _lname = value;
-                NotifyOfPropertyChange(() => LastName);
-            }
-        }
-
-        public async void GetPersonAsync()
-        {
-            Person = await api.GetAsync(1);
-            FirstName = Person.Name;
-            LastName = Person.LastName;
+            ActivateItem(new StoresViewModel());
         }
     }
 }

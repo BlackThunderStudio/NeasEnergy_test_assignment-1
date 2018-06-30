@@ -40,13 +40,13 @@ namespace DatabaseLink.mapper
             }
         }
 
-        public void Delete(District t)
+        public void Delete(int id)
         {
-            if (t.Id < 1) throw new DataLayerArgumentException("Illegal ID value. ID value cannot be less or equal zero!", new ArgumentOutOfRangeException());
+            if (id < 1) throw new DataLayerArgumentException("Illegal ID value. ID value cannot be less or equal zero!", new ArgumentOutOfRangeException());
 
             //delete the district itself
             var link = conn.GetSqlConnection();
-            string qry = $"exec spDeleteDistrict {t.Id}";
+            string qry = $"exec spDeleteDistrict {id}";
             try
             {
                 using(SqlCommand cmd = new SqlCommand(qry, link))

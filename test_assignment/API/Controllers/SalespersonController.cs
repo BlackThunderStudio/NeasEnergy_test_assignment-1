@@ -119,30 +119,26 @@ namespace API.Controllers
         }
 
         // DELETE: api/Salesperson/5
-        public Salesperson Delete([FromBody]Salesperson value)
+        public Salesperson Delete(int id)
         {
-            if (value != null)
+            var faulted = new Salesperson();
+            faulted.IsFaulted = false;
+            try
             {
-                var faulted = new Salesperson();
-                faulted.IsFaulted = false;
-                try
-                {
-                    db.Delete(value);
-                    return faulted;
-                }
-                catch (DatabaseLink.DataLayerArgumentException e)
-                {
-                    faulted.IsFaulted = true;
-                    faulted.DataLayerArgumentException = e.Message;
-                }
-                catch (DatabaseLink.DataLayerException e)
-                {
-                    faulted.IsFaulted = true;
-                    faulted.DataLayerException = e.Message;
-                }
+                db.Delete(id);
                 return faulted;
             }
-            return null;
+            catch (DatabaseLink.DataLayerArgumentException e)
+            {
+                faulted.IsFaulted = true;
+                faulted.DataLayerArgumentException = e.Message;
+            }
+            catch (DatabaseLink.DataLayerException e)
+            {
+                faulted.IsFaulted = true;
+                faulted.DataLayerException = e.Message;
+            }
+            return faulted;
         }
     }
 }

@@ -66,7 +66,7 @@ namespace DBLink_tests
                 return (x.Name.Equals("Test") && x.LastName.Equals("Object"));
             });
 
-            dBSalesperson.Delete(salesman);
+            dBSalesperson.Delete(salesman.Id);
 
         }
 
@@ -77,7 +77,7 @@ namespace DBLink_tests
             DBSalesperson dBSalesperson = new DBSalesperson();
             Salesperson person = new Salesperson() { Name = "Definitely A", LastName = "Not Existing Person", Id=-1 };
 
-            dBSalesperson.Delete(person);
+            dBSalesperson.Delete(person.Id);
 
         }
 

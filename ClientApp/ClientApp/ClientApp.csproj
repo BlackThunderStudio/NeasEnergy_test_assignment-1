@@ -74,6 +74,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ApiController\IRestClient.cs" />
     <Compile Include="ApiController\IRestController.cs" />
     <Compile Include="ApiController\RestClient.cs" />
     <Compile Include="ApiController\SalespersonController.cs" />
@@ -83,13 +84,26 @@
     </Compile>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Models\District.cs" />
+    <Compile Include="Models\Exceptions\ApiException.cs" />
     <Compile Include="Models\Exceptions\DataLayerArgumentException.cs" />
     <Compile Include="Models\Exceptions\DataLayerException.cs" />
     <Compile Include="Models\Salesperson.cs" />
     <Compile Include="Models\Store.cs" />
+    <Compile Include="ViewModels\DistrictsViewModel.cs" />
+    <Compile Include="ViewModels\SalespeopleViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
+    <Compile Include="ViewModels\StoresViewModel.cs" />
+    <Compile Include="Views\DistrictsView.xaml.cs">
+      <DependentUpon>DistrictsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SalespeopleView.xaml.cs">
+      <DependentUpon>SalespeopleView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StoresView.xaml.cs">
+      <DependentUpon>StoresView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -120,7 +134,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\DistrictsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SalespeopleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ShellView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StoresView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

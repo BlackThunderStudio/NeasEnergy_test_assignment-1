@@ -12,6 +12,6 @@ namespace DatabaseLink
         T Get(int id);
         void Persist(T t);
         void Update(T t);
-        void Delete(T t);
+        void Delete(int id);
     }
 }

@@ -113,7 +113,7 @@ namespace DBLink_tests
 
             district = db.GetAll().ToList().SingleOrDefault(x => x.Name.Equals(dName));
 
-            db.Delete(district);
+            db.Delete(district.Id);
             countNew = db.GetAll().Count();
 
             Assert.AreEqual(countOld, countNew);

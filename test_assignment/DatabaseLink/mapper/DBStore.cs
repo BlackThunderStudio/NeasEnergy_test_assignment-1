@@ -18,11 +18,11 @@ namespace DatabaseLink.mapper
             conn = new DBConnect();
         }
 
-        public void Delete(Store t)
+        public void Delete(int id)
         {
-            if (t.Id < 1) throw new DataLayerArgumentException("Illegal ID value. ID value cannot be less or equal zero!", new ArgumentOutOfRangeException());
+            if (id < 1) throw new DataLayerArgumentException("Illegal ID value. ID value cannot be less or equal zero!", new ArgumentOutOfRangeException());
 
-            string qry = $"exec spStoreDeleteById {t.Id}";
+            string qry = $"exec spStoreDeleteById {id}";
             try
             {
                 var link = conn.GetSqlConnection();
