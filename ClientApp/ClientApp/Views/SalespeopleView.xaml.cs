@@ -26,12 +26,14 @@ namespace ClientApp.Views
     {
         private SalespersonController controller;
         private ObservableCollection<Salesperson> obsPeople;
+        private ObservableCollection<Salesperson> editedPeople;
         private Salesperson SelectedSalesperson { get; set; }
 
         public SalespeopleView()
         {
             InitializeComponent();
             obsPeople = new ObservableCollection<Salesperson>();
+            editedPeople = new ObservableCollection<Salesperson>();
             controller = new SalespersonController();
             controller.Endpoint = "http://localhost:50209/";
 
@@ -57,6 +59,17 @@ namespace ClientApp.Views
             TextBox tx = e.EditingElement as TextBox;
             DataGridColumn dgc = e.Column;
             //possibly do sth with it
+
+            //match field with a person
+            if(editedPeople.Where(x => x.Id.Equals(SelectedSalesperson.Id)).Count() == 0)
+            {
+                editedPeople.Add(SelectedSalesperson);
+            }
+            else
+            {
+                editedPeople.Remove(editedPeople.Single(x => x.Id.Equals(SelectedSalesperson.Id)));
+                editedPeople.Add(SelectedSalesperson);
+            }
         }
 
         private void ObsPeople_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -109,6 +122,53 @@ namespace ClientApp.Views
         {
             NewPersonName.Clear();
             NewSalespersonLastName.Clear();
+        }
+
+        private async void UpdateAllPeople_Click(object sender, RoutedEventArgs e)
+        {
+            if(editedPeople.Count == 0)
+            {
+                MessageBox.Show("There are no edits to save.", "Save edits", MessageBoxButton.OK, MessageBoxImage.Hand);
+            }
+            else
+            {
+                MessageBoxResult result = MessageBox.Show($"There are {editedPeople.Count} changes waiting to be saved. Do you want to send the update now?",
+                    "Save edits",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+                if (result.Equals(MessageBoxResult.Yes))
+                {
+                    foreach(Salesperson person in editedPeople)
+                    {
+                        await controller.UpdateAsync(person.ToDatabaseModel(person));
+                    }
+                    clearForms();
+                    editedPeople = new ObservableCollection<Salesperson>();
+                }
+            }
+        }
+
+        private async void DeleteSelected_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show($"Are you sure you want to delete {SelectedSalesperson.Name} {SelectedSalesperson.LastName} from the system?",
+                "Delete operation",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+            if (result.Equals(MessageBoxResult.Yes))
+            {
+                try
+                {
+                    await controller.DeleteAsync(SelectedSalesperson.Id);
+                }
+                catch (ApiException ex)
+                {
+                    MessageBox.Show(ex.Message, "API Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    LoadSalespeople();
+                }
+            }
         }
     }
 }

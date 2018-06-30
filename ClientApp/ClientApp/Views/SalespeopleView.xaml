@@ -61,5 +61,7 @@
                 Width="auto" Content="Add New" 
                 Margin="10,0,10,0" Padding="10,5,10,5" 
                 Click="AddNewSalesperson_Click"/>
+        <Button x:Name="UpdateAllPeople" Content="Update All" Grid.Column="4" Grid.Row="5" Margin="0,10,0,0" Click="UpdateAllPeople_Click"/>
+        <Button x:Name="DeleteSelected" Content="Delete selected" Grid.Column="4" Grid.Row="6" Margin="0,10,0,0" Click="DeleteSelected_Click"/>
     </Grid>
 </UserControl>
