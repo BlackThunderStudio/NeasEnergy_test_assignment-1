@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,12 +8,23 @@ using ClientApp.Models.DatabaseModels;
 
 namespace ClientApp.Models
 {
-    class District : Model<DatabaseModels.District, District>
+    class District : Model<DatabaseModels.District, District>, INotifyPropertyChanged
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public Salesperson PrimarySalesperson { get; set; }
-        public IEnumerable<Salesperson> SecondarySalespeople { get; set; }
+        private int _id;
+        private string _name;
+        private Salesperson _primarySalesperson;
+        private IEnumerable<Salesperson> _secondarySalespeople;
+        public int Id { get { return _id; } set { _id = value; OnPropertyChanged("Id"); } }
+        public string Name { get { return _name; } set { _name = value; OnPropertyChanged("Name"); } }
+        public Salesperson PrimarySalesperson { get { return _primarySalesperson; } set { _primarySalesperson = value; OnPropertyChanged("PrimarySalesperson"); } }
+        public IEnumerable<Salesperson> SecondarySalespeople { get { return _secondarySalespeople; } set { _secondarySalespeople = value; OnPropertyChanged("SecondarySalespeople"); } }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged(string propertyName)
+        {
+            var handler = this.PropertyChanged;
+            if (handler != null) this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         public override District FromDatabaseModel(DatabaseModels.District databaseModel)
         {
