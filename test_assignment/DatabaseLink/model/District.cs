@@ -23,8 +23,8 @@ namespace DatabaseLink.model
         [DataMember]
         public bool IsFaulted { get; set; }
         [DataMember]
-        public DataLayerException DataLayerException { get; set; }
+        public string DataLayerException { get; set; }
         [DataMember]
-        public DataLayerArgumentException DataLayerArgumentException { get; set; }
+        public string DataLayerArgumentException { get; set; }
     }
 }

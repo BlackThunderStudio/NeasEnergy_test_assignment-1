@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace DatabaseLink
 {
     [DataContract]
-    public class DataLayerArgumentException : DataLayerException
+    public class DataLayerArgumentException : Exception
     {
         [DataMember]
         public string ExceptionMessage { get; set; }

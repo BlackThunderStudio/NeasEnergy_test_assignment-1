@@ -22,40 +22,127 @@ namespace API.Controllers
         // GET: api/Salesperson
         public IEnumerable<Salesperson> Get()
         {
-            return db.GetAll();
+            var faulted = new List<Salesperson>();
+            try
+            {
+                return db.GetAll();
+            }
+            catch (DatabaseLink.DataLayerArgumentException e)
+            {
+                faulted.Add(new Salesperson()
+                {
+                    IsFaulted = true,
+                    DataLayerArgumentException = e.Message
+                });
+            }
+            catch (DatabaseLink.DataLayerException e)
+            {
+                if (faulted.Count == 0) faulted.Add(new Salesperson() { IsFaulted = true });
+                faulted[0].DataLayerException = e.Message;
+            }
+            return faulted.AsEnumerable();
         }
 
         // GET: api/Salesperson/5
         public Salesperson Get(int id)
         {
-            return db.Get(id);
+            var faulted = new Salesperson();
+            try
+            {
+                return db.Get(id);
+            }
+            catch(DatabaseLink.DataLayerArgumentException e)
+            {
+                faulted.IsFaulted = true;
+                faulted.DataLayerArgumentException = e.Message;
+            }
+            catch(DatabaseLink.DataLayerException e)
+            {
+                faulted.IsFaulted = true;
+                faulted.DataLayerException = e.Message;
+            }
+            return faulted;
         }
 
         // POST: api/Salesperson
-        public void Post([FromBody]Salesperson value)
+        public Salesperson Post([FromBody]Salesperson value)
         {
             if (value != null) {
-                db.Persist(value);
+                var faulted = new Salesperson();
+                faulted.IsFaulted = false;
+                try
+                {
+                    db.Persist(value);
+                    return faulted;
+                }
+                catch (DatabaseLink.DataLayerArgumentException e)
+                {
+                    faulted.IsFaulted = true;
+                    faulted.DataLayerArgumentException = e.Message;
+                }
+                catch (DatabaseLink.DataLayerException e)
+                {
+                    faulted.IsFaulted = true;
+                    faulted.DataLayerException = e.Message;
+                }
+                return faulted;
             }
+            return null;
         }
 
         // PUT: api/Salesperson/5
-        public void Put(int id, [FromBody]Salesperson value)
+        public Salesperson Put(int id, [FromBody]Salesperson value)
         {
             if (value != null)
             {
-                value.Id = id;
-                db.Update(value);
+                var faulted = new Salesperson();
+                faulted.IsFaulted = false;
+                try
+                {
+                    value.Id = id;
+                    db.Update(value);
+                    return faulted;
+                }
+                catch (DatabaseLink.DataLayerArgumentException e)
+                {
+                    faulted.IsFaulted = true;
+                    faulted.DataLayerArgumentException = e.Message;
+                }
+                catch (DatabaseLink.DataLayerException e)
+                {
+                    faulted.IsFaulted = true;
+                    faulted.DataLayerException = e.Message;
+                }
+                return faulted;
             }
+            return null;
         }
 
         // DELETE: api/Salesperson/5
-        public void Delete([FromBody]Salesperson value)
+        public Salesperson Delete([FromBody]Salesperson value)
         {
             if (value != null)
             {
-                db.Delete(value);
+                var faulted = new Salesperson();
+                faulted.IsFaulted = false;
+                try
+                {
+                    db.Delete(value);
+                    return faulted;
+                }
+                catch (DatabaseLink.DataLayerArgumentException e)
+                {
+                    faulted.IsFaulted = true;
+                    faulted.DataLayerArgumentException = e.Message;
+                }
+                catch (DatabaseLink.DataLayerException e)
+                {
+                    faulted.IsFaulted = true;
+                    faulted.DataLayerException = e.Message;
+                }
+                return faulted;
             }
+            return null;
         }
     }
 }

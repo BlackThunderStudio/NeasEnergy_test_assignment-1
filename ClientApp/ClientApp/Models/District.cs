@@ -1,5 +1,4 @@
-﻿using ClientApp.Models.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -9,14 +8,16 @@ using System.Threading.Tasks;
 namespace ClientApp.Models
 {
     [DataContract]
-    public class Salesperson
+    public class District
     {
         [DataMember]
         public int Id { get; set; }
         [DataMember]
         public string Name { get; set; }
         [DataMember]
-        public string LastName { get; set; }
+        public Salesperson PrimarySalesperson { get; set; }
+        [DataMember]
+        public IEnumerable<Salesperson> SecondarySalespeople { get; set; }
 
         //for error control
         [DataMember]

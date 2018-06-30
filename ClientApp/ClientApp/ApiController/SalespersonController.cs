@@ -20,6 +20,7 @@ namespace ClientApp.ApiController
         public async Task<Salesperson> GetAsync(int id)
         {
             string path = $"/api/salesperson/{id}";
+            client.Endpoint = Endpoint;
             Salesperson person = await client.MakeRequest(path);
             return person;
         }

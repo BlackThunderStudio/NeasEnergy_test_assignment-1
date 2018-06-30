@@ -22,61 +22,177 @@ namespace API.Controllers
         // GET api/<controller>
         public IEnumerable<District> Get()
         {
-            return db.GetAll();
+            var faulted = new List<District>();
+            try
+            {
+                return db.GetAll();
+            }
+            catch (DataLayerArgumentException e)
+            {
+                faulted.Add(new District()
+                {
+                    IsFaulted = true,
+                    DataLayerArgumentException = e.Message
+                });
+            }
+            catch (DataLayerException e)
+            {
+                if (faulted.Count == 0) faulted.Add(new District() { IsFaulted = true });
+                faulted[0].DataLayerException = e.Message;
+            }
+            return faulted.AsEnumerable();
         }
 
         // GET api/<controller>/5
         public District Get(int id)
         {
-            return db.Get(id);
+            var faulted = new District();
+            try
+            {
+                return db.Get(id);
+            }
+            catch(DataLayerArgumentException e)
+            {
+                faulted.IsFaulted = true;
+                faulted.DataLayerArgumentException = e.Message;
+            }
+            catch(DataLayerException e)
+            {
+                faulted.IsFaulted = true;
+                faulted.DataLayerException = e.Message;
+            }
+            return faulted;
         }
 
         // POST api/<controller>
-        public void Post([FromBody]District value)
+        public District Post([FromBody]District value)
         {
             if(value != null)
             {
-                db.Persist(value);
+                var faulted = new District();
+                try
+                {
+                    db.Persist(value);
+                    return new District() { IsFaulted = false };
+                }
+                catch (DataLayerArgumentException e)
+                {
+                    faulted.IsFaulted = true;
+                    faulted.DataLayerArgumentException = e.Message;
+                }
+                catch (DataLayerException e)
+                {
+                    faulted.IsFaulted = true;
+                    faulted.DataLayerException = e.Message;
+                }
+                return faulted;
             }
+            return null;
         }
 
         // PUT api/<controller>/5
-        public void Put(int id, [FromBody]District value)
+        public District Put(int id, [FromBody]District value)
         {
             if(value != null)
             {
-                value.Id = id;
-                db.Update(value);
+                var faulted = new District();
+                try
+                {
+                    value.Id = id;
+                    db.Update(value);
+                    return new District() { IsFaulted = false };
+                }
+                catch (DataLayerArgumentException e)
+                {
+                    faulted.IsFaulted = true;
+                    faulted.DataLayerArgumentException = e.Message;
+                }
+                catch (DataLayerException e)
+                {
+                    faulted.IsFaulted = true;
+                    faulted.DataLayerException = e.Message;
+                }
+                return faulted;
             }
+            return null;
         }
 
         // DELETE api/<controller>/5
-        public void Delete([FromBody]District value)
+        public District Delete([FromBody]District value)
         {
             if(value != null)
             {
-                db.Delete(value);
+                var faulted = new District();
+                try
+                {
+                    db.Delete(value);
+                    return new District() { IsFaulted = false };
+                }
+                catch (DataLayerArgumentException e)
+                {
+                    faulted.IsFaulted = true;
+                    faulted.DataLayerArgumentException = e.Message;
+                }
+                catch (DataLayerException e)
+                {
+                    faulted.IsFaulted = true;
+                    faulted.DataLayerException = e.Message;
+                }
+                return faulted;
             }
+            return null;
         }
 
         [Route("api/district/{districtId}/secondary-sales/add/{personId}")]
         [HttpPost]
-        public void AssignSecondaryToDistrict(int districtId, int personId)
+        public District AssignSecondaryToDistrict(int districtId, int personId)
         {
-            DBSalesperson personDb = new DBSalesperson();
-            var person = personDb.Get(personId);
-            var district = db.Get(districtId);
-            db.AssignSecondary(person, district);
+            var faulted = new District();
+            try
+            {
+                DBSalesperson personDb = new DBSalesperson();
+                var person = personDb.Get(personId);
+                var district = db.Get(districtId);
+                db.AssignSecondary(person, district);
+                return new District() { IsFaulted = false };
+            }
+            catch (DataLayerArgumentException e)
+            {
+                faulted.IsFaulted = true;
+                faulted.DataLayerArgumentException = e.Message;
+            }
+            catch (DataLayerException e)
+            {
+                faulted.IsFaulted = true;
+                faulted.DataLayerException = e.Message;
+            }
+            return faulted;
         }
 
         [Route("api/district/{districtId}/secondary-sales/delete/{personId}")]
         [HttpPost]
-        public void DeleteSecondaryFromDistrict(int districtId, int personId)
+        public District DeleteSecondaryFromDistrict(int districtId, int personId)
         {
-            DBSalesperson personDb = new DBSalesperson();
-            var person = personDb.Get(personId);
-            var district = db.Get(districtId);
-            db.DeleteSecondary(person, district);
+            var faulted = new District();
+            try
+            {
+                DBSalesperson personDb = new DBSalesperson();
+                var person = personDb.Get(personId);
+                var district = db.Get(districtId);
+                db.DeleteSecondary(person, district);
+                return new District() { IsFaulted = false };
+            }
+            catch (DataLayerArgumentException e)
+            {
+                faulted.IsFaulted = true;
+                faulted.DataLayerArgumentException = e.Message;
+            }
+            catch (DataLayerException e)
+            {
+                faulted.IsFaulted = true;
+                faulted.DataLayerException = e.Message;
+            }
+            return faulted;
         }
     }
 }
