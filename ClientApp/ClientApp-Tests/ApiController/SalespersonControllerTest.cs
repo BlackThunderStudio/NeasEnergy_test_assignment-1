@@ -11,7 +11,7 @@ namespace ClientApp_Tests.ApiController
     [TestClass]
     public class SalespersonControllerTest
     {
-        private IRestController<Salesperson> controller;
+        private SalespersonController controller;
 
         public SalespersonControllerTest()
         {
@@ -74,6 +74,28 @@ namespace ClientApp_Tests.ApiController
                 p = await controller.GetAllAsync();
                 countNew = p.Count();
                 Assert.AreEqual(countOld, countNew);
+            }).GetAwaiter().GetResult();
+        }
+
+        [TestMethod]
+        public void SalespersonControllerTest_Update()
+        {
+            Task.Run(async () =>
+            {
+                var person = await controller.GetAsync(4);
+                var oldName = person.Name;
+                var newName = "Grzegorz";
+
+                person.Name = newName;
+                await controller.UpdateAsync(person);
+                person = await controller.GetAsync(person.Id);
+                Assert.AreEqual(newName, person.Name);
+
+                person.Name = oldName;
+                await controller.UpdateAsync(person);
+                person = await controller.GetAsync(person.Id);
+
+                Assert.AreEqual(oldName, person.Name);
             }).GetAwaiter().GetResult();
         }
     }

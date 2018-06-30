@@ -74,6 +74,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ApiController\Auth.cs" />
     <Compile Include="ApiController\IRestClient.cs" />
     <Compile Include="ApiController\IRestController.cs" />
     <Compile Include="ApiController\RestClient.cs" />

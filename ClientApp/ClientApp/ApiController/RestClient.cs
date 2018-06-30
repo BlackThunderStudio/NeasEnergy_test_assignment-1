@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.Web;
+using System.Net.Http.Headers;
 
 namespace ClientApp.ApiController
 {
@@ -23,6 +24,7 @@ namespace ClientApp.ApiController
         public async Task<TResult> GetSingle(string path)
         {
             HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Add("API_KEY", Auth.API_KEY);
             TResult result = default(TResult);
             client.BaseAddress = new Uri(Endpoint);
 
@@ -44,6 +46,7 @@ namespace ClientApp.ApiController
         public async Task<IEnumerable<TResult>> GetCollection(string path)
         {
             HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Add("API_KEY", Auth.API_KEY);
             IEnumerable<TResult> result = new List<TResult>();
             client.BaseAddress = new Uri(Endpoint);
             HttpResponseMessage response = await client.GetAsync(Endpoint + path);
@@ -57,9 +60,10 @@ namespace ClientApp.ApiController
         public async Task<TResult> Post(string path, TResult body)
         {
             HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Add("API_KEY", Auth.API_KEY);
             TResult result = default(TResult);
             client.BaseAddress = new Uri(Endpoint);
-            HttpResponseMessage response = await client.PostAsXmlAsync(Endpoint + path, body);
+            HttpResponseMessage response = await client.PostAsJsonAsync(Endpoint + path, body);
             if (response.IsSuccessStatusCode)
             {
                 result = await response.Content.ReadAsAsync<TResult>();
@@ -71,9 +75,10 @@ namespace ClientApp.ApiController
         public async Task<TResult> Put(string path, TResult body)
         {
             HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Add("API_KEY", Auth.API_KEY);
             TResult result = default(TResult);
             client.BaseAddress = new Uri(Endpoint);
-            HttpResponseMessage response = await client.PutAsXmlAsync(Endpoint + path, body);
+            HttpResponseMessage response = await client.PutAsJsonAsync(Endpoint + path, body);
             if (response.IsSuccessStatusCode)
             {
                 result = await response.Content.ReadAsAsync<TResult>();
@@ -85,6 +90,7 @@ namespace ClientApp.ApiController
         public async Task<TResult> Delete(string path)
         {
             HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Add("API_KEY", Auth.API_KEY);
             TResult result = default(TResult);
             client.BaseAddress = new Uri(Endpoint);
             HttpResponseMessage response = await client.DeleteAsync(Endpoint + path);
