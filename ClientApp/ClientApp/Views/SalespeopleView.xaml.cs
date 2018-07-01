@@ -81,7 +81,7 @@ namespace ClientApp.Views
         {
             obsPeople = new ObservableCollection<Salesperson>();
             var unconverted = await controller.GetAllAsync();
-            unconverted.ToList().ForEach(x => obsPeople.Add(new Salesperson().FromDatabaseModel(x)));
+            unconverted.ToList().ForEach(x => obsPeople.Add(x));
             DataGrid.ItemsSource = obsPeople;
         }
 
@@ -100,7 +100,7 @@ namespace ClientApp.Views
                 };
                 try
                 {
-                    await controller.PersistAsync(salesperson.ToDatabaseModel(salesperson));
+                    await controller.PersistAsync(salesperson);
                 }
                 catch(ApiException ex)
                 {
@@ -140,7 +140,7 @@ namespace ClientApp.Views
                 {
                     foreach(Salesperson person in editedPeople)
                     {
-                        await controller.UpdateAsync(person.ToDatabaseModel(person));
+                        await controller.UpdateAsync(person);
                     }
                     clearForms();
                     editedPeople = new ObservableCollection<Salesperson>();

@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ClientApp.ApiController;
 using System.Threading.Tasks;
 using ClientApp.Models.Exceptions;
-using ClientApp.Models.DatabaseModels;
+using ClientApp.Models;
 using System.Linq;
 
 namespace ClientApp_Tests.ApiController

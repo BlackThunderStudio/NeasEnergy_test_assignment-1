@@ -1,4 +1,4 @@
-﻿using ClientApp.Models.DatabaseModels;
+﻿using ClientApp.Models;
 using ClientApp.Models.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -12,11 +12,11 @@ namespace ClientApp.ApiController
     {
         public string Endpoint { get; set; }
         public const string DEFAULT_PATH = "/api/district";
-        private IRestClient<District> client;
+        private IRestClient<Models.DatabaseModels.District> client;
 
         public DistrictController()
         {
-            client = new HttpRestHandler<District>();
+            client = new HttpRestHandler<Models.DatabaseModels.District>();
         }
 
         public async Task DeleteAsync(int id)
@@ -30,9 +30,9 @@ namespace ClientApp.ApiController
         public async Task<IEnumerable<District>> GetAllAsync()
         {
             client.Endpoint = Endpoint;
-            IEnumerable<District> districts = await client.GetCollection(DEFAULT_PATH);
+            IEnumerable<Models.DatabaseModels.District> districts = await client.GetCollection(DEFAULT_PATH);
             if (districts.ToList()[0].IsFaulted) throw new ApiException(districts.ToList()[0].DataLayerArgumentException ?? districts.ToList()[0].DataLayerException);
-            return districts;
+            return districts.Select(x => new District().FromDatabaseModel(x)).AsEnumerable();
         }
 
         public async Task<District> GetAsync(int id)
@@ -41,13 +41,13 @@ namespace ClientApp.ApiController
             client.Endpoint = Endpoint;
             var district = await client.GetSingle(path);
             if (district.IsFaulted) throw new ApiException(district.DataLayerArgumentException ?? district.DataLayerException);
-            return district;
+            return new District().FromDatabaseModel(district);
         }
 
         public async Task PersistAsync(District t)
         {
             client.Endpoint = Endpoint;
-            var district = await client.Post(DEFAULT_PATH, t);
+            var district = await client.Post(DEFAULT_PATH, t.ToDatabaseModel(t));
             if (district.IsFaulted) throw new ApiException(district.DataLayerArgumentException ?? district.DataLayerException);
         }
 
@@ -55,7 +55,7 @@ namespace ClientApp.ApiController
         {
             string path = $"{DEFAULT_PATH}/{t.Id}";
             client.Endpoint = Endpoint;
-            var district = await client.Put(path, t);
+            var district = await client.Put(path, t.ToDatabaseModel(t));
             if (district.IsFaulted) throw new ApiException(district.DataLayerArgumentException ?? district.DataLayerException);
         }
 
@@ -63,7 +63,7 @@ namespace ClientApp.ApiController
         {
             string path = $"{DEFAULT_PATH}/{district.Id}/secondary-sales/add/{person.Id}";
             client.Endpoint = Endpoint;
-            var response = await client.Post(path, new District());
+            var response = await client.Post(path, new Models.DatabaseModels.District());
             if (response.IsFaulted) throw new ApiException(response.DataLayerArgumentException ?? response.DataLayerException);
         }
 
@@ -71,7 +71,7 @@ namespace ClientApp.ApiController
         {
             string path = $"{DEFAULT_PATH}/{district.Id}/secondary-sales/delete/{person.Id}";
             client.Endpoint = Endpoint;
-            var response = await client.Post(path, new District());
+            var response = await client.Post(path, new Models.DatabaseModels.District());
             if (response.IsFaulted) throw new ApiException(response.DataLayerArgumentException ?? response.DataLayerException);
         }
     }

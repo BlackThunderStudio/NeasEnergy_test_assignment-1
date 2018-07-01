@@ -1,4 +1,4 @@
-﻿using ClientApp.Models.DatabaseModels;
+﻿using ClientApp.Models;
 using ClientApp.Models.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -12,11 +12,11 @@ namespace ClientApp.ApiController
     {
         public string Endpoint { get; set; }
         public const string DEFAULT_PATH = "/api/store";
-        private IRestClient<Store> client;
+        private IRestClient<Models.DatabaseModels.Store> client;
 
         public StoreController()
         {
-            client = new HttpRestHandler<Store>();
+            client = new HttpRestHandler<Models.DatabaseModels.Store>();
         }
 
         public async Task DeleteAsync(int id)
@@ -30,9 +30,9 @@ namespace ClientApp.ApiController
         public async Task<IEnumerable<Store>> GetAllAsync()
         {
             client.Endpoint = Endpoint;
-            IEnumerable<Store> stores = await client.GetCollection(DEFAULT_PATH);
+            IEnumerable<Models.DatabaseModels.Store> stores = await client.GetCollection(DEFAULT_PATH);
             if (stores.ToList()[0].IsFaulted) throw new ApiException(stores.ToList()[0].DataLayerArgumentException ?? stores.ToList()[0].DataLayerException);
-            return stores;
+            return stores.Select(x => new Store().FromDatabaseModel(x)).AsEnumerable();
         }
 
         public async Task<Store> GetAsync(int id)
@@ -41,13 +41,13 @@ namespace ClientApp.ApiController
             client.Endpoint = Endpoint;
             var store = await client.GetSingle(path);
             if (store.IsFaulted) throw new ApiException(store.DataLayerArgumentException ?? store.DataLayerException);
-            return store;
+            return new Store().FromDatabaseModel(store);
         }
 
         public async Task PersistAsync(Store t)
         {
             client.Endpoint = Endpoint;
-            var store = await client.Post(DEFAULT_PATH, t);
+            var store = await client.Post(DEFAULT_PATH, t.ToDatabaseModel(t));
             if (store.IsFaulted) throw new ApiException(store.DataLayerArgumentException ?? store.DataLayerException);
         }
 
@@ -55,7 +55,7 @@ namespace ClientApp.ApiController
         {
             string path = $"{DEFAULT_PATH}/{t.Id}";
             client.Endpoint = Endpoint;
-            var store = await client.Put(path, t);
+            var store = await client.Put(path, t.ToDatabaseModel(t));
             if (store.IsFaulted) throw new ApiException(store.DataLayerArgumentException ?? store.DataLayerException);
         }
     }

@@ -8,7 +8,7 @@ using ClientApp.Models.DatabaseModels;
 
 namespace ClientApp.Models
 {
-    class District : Model<DatabaseModels.District, District>, INotifyPropertyChanged
+    public class District : Model<DatabaseModels.District, District>, INotifyPropertyChanged
     {
         private int _id;
         private string _name;
@@ -28,26 +28,42 @@ namespace ClientApp.Models
 
         public override District FromDatabaseModel(DatabaseModels.District databaseModel)
         {
-            IEnumerable<Salesperson> secondarySales = databaseModel.SecondarySalespeople.Select(x => new Salesperson().FromDatabaseModel(x));
-            return new District()
+            if(databaseModel != null)
             {
-                Id = databaseModel.Id,
-                Name = databaseModel.Name,
-                PrimarySalesperson = new Salesperson().FromDatabaseModel(databaseModel.PrimarySalesperson),
-                SecondarySalespeople = secondarySales
-            };
+                IEnumerable<Salesperson> secondarySales = new List<Salesperson>();
+                if (databaseModel.SecondarySalespeople != null)
+                {
+                    secondarySales = databaseModel.SecondarySalespeople.Select(x => new Salesperson().FromDatabaseModel(x));
+                }
+                return new District()
+                {
+                    Id = databaseModel.Id,
+                    Name = databaseModel.Name,
+                    PrimarySalesperson = new Salesperson().FromDatabaseModel(databaseModel.PrimarySalesperson),
+                    SecondarySalespeople = secondarySales
+                };
+            }
+            return new District();
         }
 
         public override DatabaseModels.District ToDatabaseModel(District clientModel)
         {
-            IEnumerable<DatabaseModels.Salesperson> secondarySales = clientModel.SecondarySalespeople.Select(x => new Salesperson().ToDatabaseModel(x));
-            return new DatabaseModels.District()
+            if(clientModel != null)
             {
-                Id = clientModel.Id,
-                Name = clientModel.Name,
-                PrimarySalesperson = new Salesperson().ToDatabaseModel(clientModel.PrimarySalesperson),
-                SecondarySalespeople = secondarySales
-            };
+                IEnumerable<DatabaseModels.Salesperson> secondarySales = new List<DatabaseModels.Salesperson>();
+                if (clientModel.SecondarySalespeople != null)
+                {
+                    secondarySales = clientModel.SecondarySalespeople.Select(x => new Salesperson().ToDatabaseModel(x));
+                }
+                return new DatabaseModels.District()
+                {
+                    Id = clientModel.Id,
+                    Name = clientModel.Name,
+                    PrimarySalesperson = new Salesperson().ToDatabaseModel(clientModel.PrimarySalesperson),
+                    SecondarySalespeople = secondarySales
+                };
+            }
+            return new DatabaseModels.District();
         }
     }
 }

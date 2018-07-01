@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClientApp.Models
 {
-    abstract class Model<DatabaseT, ClientT>
+    public abstract class Model<DatabaseT, ClientT>
     {
         public abstract ClientT FromDatabaseModel(DatabaseT databaseModel);
         public abstract DatabaseT ToDatabaseModel(ClientT clientModel);

@@ -8,7 +8,7 @@ using ClientApp.Models.DatabaseModels;
 
 namespace ClientApp.Models
 {
-    class Store : Model<DatabaseModels.Store, Store>, INotifyPropertyChanged
+    public class Store : Model<DatabaseModels.Store, Store>, INotifyPropertyChanged
     {
         private int _id;
         private string _name, _address;
@@ -27,24 +27,32 @@ namespace ClientApp.Models
 
         public override Store FromDatabaseModel(DatabaseModels.Store databaseModel)
         {
-            return new Store()
+            if(databaseModel != null)
             {
-                Id = databaseModel.Id,
-                Name = databaseModel.Name,
-                Address = databaseModel.Address,
-                District = new District().FromDatabaseModel(databaseModel.District)
-            };
+                return new Store()
+                {
+                    Id = databaseModel.Id,
+                    Name = databaseModel.Name,
+                    Address = databaseModel.Address,
+                    District = new District().FromDatabaseModel(databaseModel.District)
+                };
+            }
+            return new Store();
         }
 
         public override DatabaseModels.Store ToDatabaseModel(Store clientModel)
         {
-            return new DatabaseModels.Store()
+            if(clientModel != null)
             {
-                Id = clientModel.Id,
-                Name = clientModel.Name,
-                Address = clientModel.Address,
-                District = new District().ToDatabaseModel(clientModel.District)
-            };
+                return new DatabaseModels.Store()
+                {
+                    Id = clientModel.Id,
+                    Name = clientModel.Name,
+                    Address = clientModel.Address,
+                    District = new District().ToDatabaseModel(clientModel.District)
+                };
+            }
+            return new DatabaseModels.Store();
         }
     }
 }

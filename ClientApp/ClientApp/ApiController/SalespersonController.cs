@@ -1,4 +1,4 @@
-﻿using ClientApp.Models.DatabaseModels;
+﻿using ClientApp.Models;
 using ClientApp.Models.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -12,34 +12,35 @@ namespace ClientApp.ApiController
     {
         public const string DEFAULT_PATH = "/api/salesperson";
         public string Endpoint { get; set; }
-        private IRestClient<Salesperson> client;
+        private IRestClient<Models.DatabaseModels.Salesperson> client;
 
         public SalespersonController()
         {
-            client = new HttpRestHandler<Salesperson>();
+            client = new HttpRestHandler<Models.DatabaseModels.Salesperson>();
         }
 
         public async Task<Salesperson> GetAsync(int id)
         {
             string path = $"{DEFAULT_PATH}/{id}";
             client.Endpoint = Endpoint;
-            Salesperson person = await client.GetSingle(path);
+            Models.DatabaseModels.Salesperson person = await client.GetSingle(path);
             if (person.IsFaulted) throw new ApiException(person.DataLayerArgumentException ?? person.DataLayerException);
-            return person;
+            return new Salesperson().FromDatabaseModel(person);
         }
 
         public async Task<IEnumerable<Salesperson>> GetAllAsync()
         {
             client.Endpoint = Endpoint;
-            IEnumerable<Salesperson> people = await client.GetCollection(DEFAULT_PATH);
+            IEnumerable<Models.DatabaseModels.Salesperson> people = await client.GetCollection(DEFAULT_PATH);
             if (people.ToList()[0].IsFaulted) throw new ApiException(people.ToList()[0].DataLayerArgumentException ?? people.ToList()[0].DataLayerException);
-            return people;
+            return people.Select(x => new Salesperson().FromDatabaseModel(x)).AsEnumerable();
         }
 
         public async Task PersistAsync(Salesperson t)
         {
+            var converted = t.ToDatabaseModel(t);
             client.Endpoint = Endpoint;
-            Salesperson person = await client.Post(DEFAULT_PATH, t);
+            var person = await client.Post(DEFAULT_PATH, converted);
             if (person.IsFaulted) throw new ApiException(person.DataLayerArgumentException ?? person.DataLayerException);
         }
 
@@ -47,7 +48,7 @@ namespace ClientApp.ApiController
         {
             string path = $"{DEFAULT_PATH}/{t.Id}";
             client.Endpoint = Endpoint;
-            var person = await client.Put(path, t);
+            var person = await client.Put(path, t.ToDatabaseModel(t));
             if (person.IsFaulted) throw new ApiException(person.DataLayerArgumentException ?? person.DataLayerException);
         }
 

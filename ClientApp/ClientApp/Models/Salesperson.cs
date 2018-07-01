@@ -8,7 +8,7 @@ using ClientApp.Models.DatabaseModels;
 
 namespace ClientApp.Models
 {
-    class Salesperson : Model<DatabaseModels.Salesperson, Salesperson>, INotifyPropertyChanged
+    public class Salesperson : Model<DatabaseModels.Salesperson, Salesperson>, INotifyPropertyChanged
     {
         private int _id;
         private string _name, _lastName;
@@ -25,22 +25,30 @@ namespace ClientApp.Models
 
         public override Salesperson FromDatabaseModel(DatabaseModels.Salesperson databaseModel)
         {
-            return new Salesperson()
+            if(databaseModel != null)
             {
-                Id = databaseModel.Id,
-                Name = databaseModel.Name,
-                LastName = databaseModel.LastName
-            };
+                return new Salesperson()
+                {
+                    Id = databaseModel.Id,
+                    Name = databaseModel.Name,
+                    LastName = databaseModel.LastName
+                };
+            }
+            return new Salesperson();
         }
 
         public override DatabaseModels.Salesperson ToDatabaseModel(Salesperson clientModel)
         {
-            return new DatabaseModels.Salesperson()
+            if(clientModel != null)
             {
-                Id = clientModel.Id,
-                Name = clientModel.Name,
-                LastName = clientModel.LastName
-            };
+                return new DatabaseModels.Salesperson()
+                {
+                    Id = clientModel.Id,
+                    Name = clientModel.Name,
+                    LastName = clientModel.LastName
+                };
+            }
+            return new DatabaseModels.Salesperson();
         }
     }
 }

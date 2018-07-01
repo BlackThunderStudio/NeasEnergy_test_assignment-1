@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using ClientApp.ApiController;
-using ClientApp.Models.DatabaseModels;
+using ClientApp.Models;
 using ClientApp.Models.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -61,7 +61,9 @@ namespace ClientApp_Tests.ApiController
                     Name = "Norway",
                     PrimarySalesperson = new Salesperson()
                     {
-                        Id = 5
+                        Id = 5,
+                        Name = "zzz",
+                        LastName = "xxx"
                     }
                 };
                 var p = await controller.GetAllAsync();
