@@ -17,6 +17,7 @@ namespace ClientApp.ApiController
         public DistrictController()
         {
             client = new HttpRestHandler<Models.DatabaseModels.District>();
+            Endpoint = Auth.BASE_ADDRESS;
         }
 
         public async Task DeleteAsync(int id)

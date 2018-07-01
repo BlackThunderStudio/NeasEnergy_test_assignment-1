@@ -17,6 +17,7 @@ namespace ClientApp.ApiController
         public SalespersonController()
         {
             client = new HttpRestHandler<Models.DatabaseModels.Salesperson>();
+            Endpoint = Auth.BASE_ADDRESS;
         }
 
         public async Task<Salesperson> GetAsync(int id)

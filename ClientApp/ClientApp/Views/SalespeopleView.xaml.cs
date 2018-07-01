@@ -35,18 +35,20 @@ namespace ClientApp.Views
             obsPeople = new ObservableCollection<Salesperson>();
             editedPeople = new ObservableCollection<Salesperson>();
             controller = new SalespersonController();
-            controller.Endpoint = "http://localhost:50209/";
 
             obsPeople.CollectionChanged += ObsPeople_CollectionChanged;
             DataGrid.CellEditEnding += DataGrid_CellEditEnding;
             DataGrid.SelectedCellsChanged += DataGrid_SelectedCellsChanged;
+            this.Loaded += SalespeopleView_Loaded;        
+        }
 
-
+        #region internal events
+        private void SalespeopleView_Loaded(object sender, RoutedEventArgs e)
+        {
             new Action(async () =>
             {
                 await LoadSalespeople();
             }).Invoke();
-            
         }
 
         private void DataGrid_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
@@ -76,18 +78,12 @@ namespace ClientApp.Views
         {
             //do nothing for now
         }
+        #endregion
 
-        private async Task LoadSalespeople()
-        {
-            obsPeople = new ObservableCollection<Salesperson>();
-            var unconverted = await controller.GetAllAsync();
-            unconverted.ToList().ForEach(x => obsPeople.Add(x));
-            DataGrid.ItemsSource = obsPeople;
-        }
-
+        #region Button events
         private async void AddNewSalesperson_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show($"Are you sure you want to create a new salesperson ({NewPersonName.Text} {NewSalespersonLastName.Text})?",
+            MessageBoxResult result = MessageBox.Show($"Do you want to create a new salesperson?\n{NewPersonName.Text} {NewSalespersonLastName.Text}",
                 "New salesperson creation",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question);
@@ -116,13 +112,7 @@ namespace ClientApp.Views
             {
                 clearForms();
             }
-        }
-
-        private void clearForms()
-        {
-            NewPersonName.Clear();
-            NewSalespersonLastName.Clear();
-        }
+        }      
 
         private async void UpdateAllPeople_Click(object sender, RoutedEventArgs e)
         {
@@ -169,6 +159,28 @@ namespace ClientApp.Views
                     LoadSalespeople();
                 }
             }
+        }
+        #endregion
+
+        private async Task LoadSalespeople()
+        {
+            obsPeople = new ObservableCollection<Salesperson>();
+            try
+            {
+                var people = await controller.GetAllAsync();
+                people.ToList().ForEach(x => obsPeople.Add(x));
+                DataGrid.ItemsSource = obsPeople;
+            }
+            catch(ApiException ex)
+            {
+                MessageBox.Show(ex.Message, "API Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void clearForms()
+        {
+            NewPersonName.Clear();
+            NewSalespersonLastName.Clear();
         }
     }
 }

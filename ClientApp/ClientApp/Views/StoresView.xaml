@@ -4,9 +4,67 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ClientApp.Views"
-             mc:Ignorable="d" Background="ForestGreen"
+             mc:Ignorable="d" Background="#88FFFFFF"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <DataGrid x:Name="DataGrid" Grid.Column="1" Grid.Row="1" Grid.RowSpan="10"
+                  ScrollViewer.CanContentScroll="True" 
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                  AutoGenerateColumns="False"
+                  SelectedItem="{Binding Path=SelectedStore, Mode=TwoWay}">
+
+            <DataGrid.Resources>
+                <!--<Style TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="Background" Value="#FF64A0FF"/>
+                    <Setter Property="BorderThickness" Value="1,1,1,1"/>
+                    <Setter Property="BorderBrush" Value="#88000000" />
+                </Style>-->
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Width="120" Binding="{Binding Name}" x:Name="DataGridColumnName"/>
+                <DataGridTextColumn Header="Address" Width="120" Binding="{Binding Address}" x:Name="DataGridColumnAddress"/>
+                <DataGridTextColumn Header="District" Width="150" Binding="{Binding District.Name}" x:Name="DataGridColumnDistrictName"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <TextBlock Text="New store name" Grid.Column="4" Grid.Row="1" HorizontalAlignment="Left" />
+        <TextBox x:Name="NewStoreName" Grid.Column="4" Grid.Row="2" Width="150" HorizontalAlignment="Left" Height="20" />
+        <TextBlock Text="New store address" Grid.Column="4" Grid.Row="3" />
+        <TextBox x:Name="NewStoreAddress" Grid.Column="4" Grid.Row="4" Width="150" Height="20"/>
+        <ComboBox x:Name="DistrictComboBox" Grid.Column="4" Grid.Row="5" Margin="0,10,0,0"
+                  DisplayMemberPath="Name"
+                  SelectedValuePath="Id" SelectedValue="{Binding Id}"/>
+        <Button x:Name="AddNewStore" Grid.Column="5" Grid.Row="4" Grid.RowSpan="2" Height="25"
+                VerticalAlignment="Bottom"
+                Width="auto" Content="Add New" 
+                Margin="10,0,10,0" Padding="10,5,10,5" Click="AddNewStore_Click" />
+        <Button x:Name="UpdateAllStores" Content="Update All" Grid.Column="4" Grid.Row="6" Margin="0,10,0,0" Click="UpdateAllStores_Click" />
+        <Button x:Name="DeleteSelected" Content="Delete selected" Grid.Column="4" Grid.Row="7" Margin="0,10,0,0" Click="DeleteSelected_Click" />
     </Grid>
 </UserControl>
