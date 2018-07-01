@@ -22,7 +22,7 @@ namespace ClientApp.Views
     /// <summary>
     /// Interaction logic for SalespeopleView.xaml
     /// </summary>
-    public partial class SalespeopleView : UserControl
+    public partial class SalespeopleView : UserControl, IFieldValidator
     {
         private SalespersonController controller;
         private ObservableCollection<Salesperson> obsPeople;
@@ -83,34 +83,41 @@ namespace ClientApp.Views
         #region Button events
         private async void AddNewSalesperson_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show($"Do you want to create a new salesperson?\n{NewPersonName.Text} {NewSalespersonLastName.Text}",
+            if (ValidateFields())
+            {
+                MessageBoxResult result = MessageBox.Show($"Do you want to create a new salesperson?\n{NewPersonName.Text} {NewSalespersonLastName.Text}",
                 "New salesperson creation",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question);
-            if (result.Equals(MessageBoxResult.Yes))
-            {
-                Salesperson salesperson = new Salesperson()
+                if (result.Equals(MessageBoxResult.Yes))
                 {
-                    Name = NewPersonName.Text,
-                    LastName = NewSalespersonLastName.Text
-                };
-                try
-                {
-                    await controller.PersistAsync(salesperson);
+                    Salesperson salesperson = new Salesperson()
+                    {
+                        Name = NewPersonName.Text,
+                        LastName = NewSalespersonLastName.Text
+                    };
+                    try
+                    {
+                        await controller.PersistAsync(salesperson);
+                    }
+                    catch (ApiException ex)
+                    {
+                        MessageBox.Show(ex.Message, "API Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    finally
+                    {
+                        clearForms();
+                        LoadSalespeople();
+                    }
                 }
-                catch(ApiException ex)
-                {
-                    MessageBox.Show(ex.Message, "API Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                finally
+                else
                 {
                     clearForms();
-                    LoadSalespeople();
                 }
             }
             else
             {
-                clearForms();
+                MessageBox.Show("One or more fields are empty!", "Operation halted", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }      
 
@@ -181,6 +188,12 @@ namespace ClientApp.Views
         {
             NewPersonName.Clear();
             NewSalespersonLastName.Clear();
+        }
+
+        public bool ValidateFields()
+        {
+            if (NewPersonName == null || NewSalespersonLastName == null) return false;
+            return (!String.IsNullOrWhiteSpace(NewPersonName.Text) && !String.IsNullOrWhiteSpace(NewSalespersonLastName.Text));
         }
     }
 }

@@ -22,7 +22,7 @@ namespace ClientApp.Views
     /// <summary>
     /// Interaction logic for DistrictsView.xaml
     /// </summary>
-    public partial class DistrictsView : UserControl
+    public partial class DistrictsView : UserControl, IFieldValidator
     {
         private DistrictController districtContext;
         private SalespersonController salespersonContext;
@@ -174,35 +174,48 @@ namespace ClientApp.Views
             }
         }
 
+        public bool ValidateFields()
+        {
+            if (NewDistrictName == null) return false;
+            return (!NewDistrictName.Text.Equals(String.Empty) && !String.IsNullOrWhiteSpace(NewDistrictName.Text));
+        }
+
         #region Button events
         private async void AddNewDistrict_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show($"Do you want to add a new district to the system?\n" +
+            if (ValidateFields())
+            {
+                MessageBoxResult result = MessageBox.Show($"Do you want to add a new district to the system?\n" +
                 $"{NewDistrictName.Text}\nPrimary Salesperson: {SelectedNewPrimarySalesperson.FullName}",
                 "New district creation",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question);
-            if (result.Equals(MessageBoxResult.Yes))
+                if (result.Equals(MessageBoxResult.Yes))
+                {
+                    District district = new District()
+                    {
+                        Name = NewDistrictName.Text,
+                        PrimarySalesperson = SelectedNewPrimarySalesperson
+                    };
+                    try
+                    {
+                        await districtContext.PersistAsync(district);
+                    }
+                    catch (ApiException ex)
+                    {
+                        MessageBox.Show(ex.Message, "API Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    finally
+                    {
+                        NewDistrictName.Clear();
+                        LoadDistricts();
+                        LoadSalespeople();
+                    }
+                }
+            }
+            else
             {
-                District district = new District()
-                {
-                    Name = NewDistrictName.Text,
-                    PrimarySalesperson = SelectedNewPrimarySalesperson
-                };
-                try
-                {
-                    await districtContext.PersistAsync(district);
-                }
-                catch(ApiException ex)
-                {
-                    MessageBox.Show(ex.Message, "API Error!", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                finally
-                {
-                    NewDistrictName.Clear();
-                    LoadDistricts();
-                    LoadSalespeople();
-                }
+                MessageBox.Show("One or more fields are empty!", "Operation halted", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 

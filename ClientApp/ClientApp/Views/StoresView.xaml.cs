@@ -22,7 +22,7 @@ namespace ClientApp.Views
     /// <summary>
     /// Interaction logic for StoresView.xaml
     /// </summary>
-    public partial class StoresView : UserControl
+    public partial class StoresView : UserControl, IFieldValidator
     {
         private StoreController storeContext;
         private DistrictController districtContext;
@@ -84,32 +84,39 @@ namespace ClientApp.Views
         #region Button events
         private async void AddNewStore_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show($"Do you want to add a new store to the system?\n " +
+            if (ValidateFields())
+            {
+                MessageBoxResult result = MessageBox.Show($"Do you want to add a new store to the system?\n " +
                 $"{NewStoreName.Text}\n{NewStoreAddress.Text}\n{SelectedDistrict.Name}",
                 "New store creation",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question);
-            if (result.Equals(MessageBoxResult.Yes))
+                if (result.Equals(MessageBoxResult.Yes))
+                {
+                    Store store = new Store()
+                    {
+                        Name = NewStoreName.Text,
+                        Address = NewStoreAddress.Text,
+                        District = SelectedDistrict
+                    };
+                    try
+                    {
+                        await storeContext.PersistAsync(store);
+                    }
+                    catch (ApiException ex)
+                    {
+                        MessageBox.Show(ex.Message, "API Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    finally
+                    {
+                        ClearForms();
+                        LoadData();
+                    }
+                }
+            }
+            else
             {
-                Store store = new Store()
-                {
-                    Name = NewStoreName.Text,
-                    Address = NewStoreAddress.Text,
-                    District = SelectedDistrict
-                };
-                try
-                {
-                    await storeContext.PersistAsync(store);
-                }
-                catch(ApiException ex)
-                {
-                    MessageBox.Show(ex.Message, "API Error!", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                finally
-                {
-                    ClearForms();
-                    LoadData();
-                }
+                MessageBox.Show("One or more fields are empty!", "Operation halted", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -187,6 +194,12 @@ namespace ClientApp.Views
         {
             NewStoreName.Clear();
             NewStoreAddress.Clear();
+        }
+
+        public bool ValidateFields()
+        {
+            if (NewStoreName == null || NewStoreAddress == null) return false;
+            return (!String.IsNullOrWhiteSpace(NewStoreName.Text) && !String.IsNullOrWhiteSpace(NewStoreAddress.Text));
         }
     }
 }
