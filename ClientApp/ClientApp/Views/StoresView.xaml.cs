@@ -48,6 +48,7 @@ namespace ClientApp.Views
             DistrictComboBox.DropDownClosed += DistrictComboBox_DropDownClosed;
         }
 
+        #region local events
         private void DistrictComboBox_DropDownClosed(object sender, EventArgs e)
         {
             if(DistrictComboBox.SelectedValue != null)
@@ -78,7 +79,9 @@ namespace ClientApp.Views
         {
             LoadData();
         }
+        #endregion
 
+        #region Button events
         private async void AddNewStore_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show($"Do you want to add a new store to the system?\n " +
@@ -156,6 +159,7 @@ namespace ClientApp.Views
                 }
             }
         }
+        #endregion
 
         private async Task LoadData()
         {

@@ -18,6 +18,13 @@ namespace ClientApp.Models
         public string Name { get { return _name; } set { _name = value; OnPropertyChanged("Name"); } }
         public Salesperson PrimarySalesperson { get { return _primarySalesperson; } set { _primarySalesperson = value; OnPropertyChanged("PrimarySalesperson"); } }
         public IEnumerable<Salesperson> SecondarySalespeople { get { return _secondarySalespeople; } set { _secondarySalespeople = value; OnPropertyChanged("SecondarySalespeople"); } }
+        public int CountOfSalespeople
+        {
+            get
+            {
+                return 1 + _secondarySalespeople.Count();
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(string propertyName)

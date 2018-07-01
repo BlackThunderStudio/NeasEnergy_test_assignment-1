@@ -15,6 +15,7 @@ namespace ClientApp.Models
         public int Id { get { return _id; } set { _id = value; OnPropertyChanged("Id"); } }
         public string Name { get { return _name; } set { _name = value; OnPropertyChanged("Name"); } }
         public string LastName { get { return _lastName; } set { _lastName = value; OnPropertyChanged("LastName"); } }
+        public string FullName { get { return $"{_name} {_lastName}"; } }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(string propertyName)
