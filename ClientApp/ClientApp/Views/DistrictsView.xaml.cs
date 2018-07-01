@@ -68,6 +68,24 @@ namespace ClientApp.Views
             if(ReassignPrimarySalespersonComboBox.SelectedValue != null)
             {
                 SelectedEditedPrimarySalesperson = obsSalespeople.SingleOrDefault(x => x.Id.Equals((int)ReassignPrimarySalespersonComboBox.SelectedValue));
+                //also add district to the edited list
+                if (editedDistricts.Where(x => x.Id.Equals(SelectedDistrict.Id)).Count() == 0)
+                {
+                    if (SelectedEditedPrimarySalesperson != null && !SelectedEditedPrimarySalesperson.Equals(SelectedDistrict.PrimarySalesperson))
+                    {
+                        SelectedDistrict.PrimarySalesperson = SelectedEditedPrimarySalesperson;
+                    }
+                    editedDistricts.Add(SelectedDistrict);
+                }
+                else
+                {
+                    editedDistricts.Remove(editedDistricts.Single(x => x.Id.Equals(SelectedDistrict.Id)));
+                    if (SelectedEditedPrimarySalesperson != null && !SelectedEditedPrimarySalesperson.Equals(SelectedDistrict.PrimarySalesperson))
+                    {
+                        SelectedDistrict.PrimarySalesperson = SelectedEditedPrimarySalesperson;
+                    }
+                    editedDistricts.Add(SelectedDistrict);
+                }
             }
         }
 
@@ -110,7 +128,10 @@ namespace ClientApp.Views
             SelectedDistrict = DataGrid.SelectedItem as District;
             //TODO: Investigate why the line below throws NullReferenceException
             //ReassignPrimarySalespersonComboBox.SelectedItem = SelectedDistrict.PrimarySalesperson;
-            SecondarySalespersonDataGrid.ItemsSource = SelectedDistrict.SecondarySalespeople;
+            if(SelectedDistrict != null)
+            {
+                SecondarySalespersonDataGrid.ItemsSource = SelectedDistrict.SecondarySalespeople;
+            }
         }
 
         private void DistrictsView_Loaded(object sender, RoutedEventArgs e)
