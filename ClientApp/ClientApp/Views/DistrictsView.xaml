@@ -5,10 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ClientApp.Views"
              mc:Ignorable="d" Background="#88FFFFFF"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" FontFamily="Segoe UI Light" FontSize="14">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -33,7 +34,8 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="DataGrid" Grid.Column="1" Grid.Row="1" Grid.RowSpan="7"
+        <TextBlock Text="Districts" FontSize="24" Grid.Column="1" Grid.Row="1" Margin="0,0,0,10"/>
+        <DataGrid x:Name="DataGrid" Grid.Column="1" Grid.Row="2" Grid.RowSpan="6"
                   ScrollViewer.CanContentScroll="True" 
                   ScrollViewer.VerticalScrollBarVisibility="Auto"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
@@ -53,18 +55,18 @@
                 <DataGridTextColumn Header="Salespeople" Width="80" Binding="{Binding CountOfSalespeople}" x:Name="DataGridColumnDistrictName"/>
             </DataGrid.Columns>
         </DataGrid>
-        <TextBlock Text="New district name" Grid.Column="4" Grid.Row="1" HorizontalAlignment="Left" />
-        <TextBox x:Name="NewDistrictName" Grid.Column="4" Grid.Row="2" Width="150" HorizontalAlignment="Left" Height="20" />
-        <ComboBox x:Name="PrimarySalespersonNewComboBox" Grid.Column="4" Grid.Row="3" Margin="0,10,0,0"
+        <TextBlock Text="New district name" Grid.Column="4" Grid.Row="2" HorizontalAlignment="Left" />
+        <TextBox x:Name="NewDistrictName" Grid.Column="4" Grid.Row="3" Width="150" HorizontalAlignment="Left" Height="20" />
+        <ComboBox x:Name="PrimarySalespersonNewComboBox" Grid.Column="4" Grid.Row="4" Margin="0,10,0,0"
                   DisplayMemberPath="FullName"
                   SelectedValuePath="Id" SelectedValue="{Binding Id}"/>
-        <Button x:Name="AddNewDistrict" Grid.Column="5" Grid.Row="3" Grid.RowSpan="2" Height="25"
-                VerticalAlignment="Bottom"
-                Width="auto" Content="Add New" 
-                Margin="10,0,10,0" Padding="10,5,10,5" Click="AddNewDistrict_Click" />
-        <Button x:Name="UpdateAllStores" Content="Update All" Grid.Column="4" Grid.Row="4" Margin="0,10,0,0" Height="20" VerticalAlignment="Top" Click="UpdateAllStores_Click" />
-        <Button x:Name="DeleteSelected" Content="Delete selected" Grid.Column="4" Grid.Row="5" Margin="0,10,0,0" Click="DeleteSelected_Click" />
-        <DataGrid x:Name="SecondarySalespersonDataGrid" Grid.Column="4" Grid.Row="6" MinHeight="200" Grid.ColumnSpan="5" Margin="0,10,0,0"
+        <Button x:Name="AddNewDistrict" Grid.Column="5" Grid.Row="5"
+                Content="Add New" 
+                Margin="10,10,10,0"
+                Padding="20,0,20,0" Click="AddNewDistrict_Click" />
+        <Button x:Name="UpdateAllStores" Content="Update All" Grid.Column="4" Grid.Row="5" Margin="0,10,0,0" Height="20" VerticalAlignment="Top" Click="UpdateAllStores_Click" />
+        <Button x:Name="DeleteSelected" Content="Delete selected" Grid.Column="4" Grid.Row="6" Margin="0,10,0,0" Click="DeleteSelected_Click" />
+        <DataGrid x:Name="SecondarySalespersonDataGrid" Grid.Column="4" Grid.Row="7" MinHeight="200" Grid.ColumnSpan="5" Margin="0,10,0,0"
                   ScrollViewer.CanContentScroll="True" 
                   ScrollViewer.VerticalScrollBarVisibility="Auto"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
@@ -75,11 +77,11 @@
                 <DataGridTextColumn Header="Last name" Width="*" Binding="{Binding LastName}" x:Name="SalesDataGridColumnLastName"/>
             </DataGrid.Columns>
         </DataGrid>
-        <ComboBox x:Name="SecondarySalespersonComboBox" Grid.Column="4" Grid.Row="7" Margin="0,10,0,0"
+        <ComboBox x:Name="SecondarySalespersonComboBox" Grid.Column="4" Grid.Row="8" Margin="0,10,0,0"
                   DisplayMemberPath="FullName"
                   SelectedValuePath="Id" SelectedValue="{Binding Id}"/>
-        <Button x:Name="AddNewSecondarySalesperson" Content="Assign" Padding="5,0,5,0" Margin="5,10,5,0" Grid.Row="7" Grid.Column="5" Click="AddNewSecondarySalesperson_Click"/>
-        <Button x:Name="DeleteSelectedSecondarySalesperson" Content="Delete Selected" Margin="5,10,5,0" Padding="5,0,5,0" Grid.Row="7" Grid.Column="6" Click="DeleteSelectedSecondarySalesperson_Click"/>
+        <Button x:Name="AddNewSecondarySalesperson" Content="Assign" Padding="5,0,5,0" Margin="5,10,5,0" Grid.Row="8" Grid.Column="5" Click="AddNewSecondarySalesperson_Click"/>
+        <Button x:Name="DeleteSelectedSecondarySalesperson" Content="Delete Selected" Margin="5,10,5,0" Padding="5,0,5,0" Grid.Row="8" Grid.Column="6" Click="DeleteSelectedSecondarySalesperson_Click"/>
         <Grid Grid.Row="8" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="10"/>

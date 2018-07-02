@@ -4,6 +4,10 @@
              xmlns:local="clr-namespace:ClientApp"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#4286f4" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
     </Application.Resources>
 </Application>
